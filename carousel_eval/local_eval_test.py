@@ -795,9 +795,6 @@ def normalize_fallback(df: pd.DataFrame) -> pd.DataFrame:
         ft = tags.get("food_type", [])
         if ft and isinstance(ft, list):
             return ft
-        entry = row.get("food_tag_entry")
-        if pd.notna(entry) and entry:
-            return [str(entry)]
         return []
 
     def _extract_cuisine_type(row):
@@ -895,15 +892,21 @@ def embed_carousels(
     return df
 
 
-def embed_items(model, df: pd.DataFrame) -> pd.DataFrame:
-    """Add item_emb: embed '{item_name}. {description}' or just item_name."""
+def embed_items(model, df: pd.DataFrame, embed_mode: str) -> pd.DataFrame:
+    """Add item_emb column. embed_mode controls the text used:
+      - title_only:     item_name
+      - title_metadata: '{item_name}. {description}'
+    """
     df = df.copy()
-    texts = df.apply(
-        lambda r: f"{r['item_name']}. {r['description']}"
-        if r["description"]
-        else str(r["item_name"]),
-        axis=1,
-    ).tolist()
+    if embed_mode == "title_metadata":
+        texts = df.apply(
+            lambda r: f"{r['item_name']}. {r['description']}"
+            if r.get("description")
+            else str(r["item_name"]),
+            axis=1,
+        ).tolist()
+    else:
+        texts = df["item_name"].fillna("").astype(str).tolist()
 
     print(f"[embed] Encoding {len(texts)} order-item texts ...")
     embs = model.encode(
@@ -1068,7 +1071,7 @@ def main():
         print(f"[prepare] Order rows after filtering: {len(df_orders):,}")
 
         model = get_embedding_model()
-        df_orders = embed_items(model, df_orders)
+        df_orders = embed_items(model, df_orders, args.embed_mode)
 
         pkl_path = os.path.join(args.output_dir, "orders_embedded.pkl")
         df_orders.to_pickle(pkl_path)
@@ -1143,7 +1146,7 @@ def main():
         model = get_embedding_model()
         df_carousel = embed_carousels(model, df_carousel, args.embed_mode)
         if not orders_pre_embedded:
-            df_orders = embed_items(model, df_orders)
+            df_orders = embed_items(model, df_orders, args.embed_mode)
 
         # Evaluate
         source = args.source_name
@@ -1211,7 +1214,7 @@ def main():
     model = get_embedding_model()
     df_ebr = embed_carousels(model, df_ebr, args.embed_mode)
     df_fallback = embed_carousels(model, df_fallback, args.embed_mode)
-    df_orders = embed_items(model, df_orders)
+    df_orders = embed_items(model, df_orders, args.embed_mode)
 
     print("\n[eval] Running EBR evaluation ...")
     metrics_ebr = run_evaluation(df_ebr, df_orders, "ebr", args.sr_theta)
