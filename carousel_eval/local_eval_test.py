@@ -1073,7 +1073,7 @@ def main():
         model = get_embedding_model()
         df_orders = embed_items(model, df_orders, args.embed_mode)
 
-        pkl_path = os.path.join(args.output_dir, "orders_embedded.pkl")
+        pkl_path = os.path.join(args.output_dir, f"orders_embedded_{args.embed_mode}.pkl")
         df_orders.to_pickle(pkl_path)
         print(f"[prepare] Saved {pkl_path} ({len(df_orders):,} rows)")
         print("[prepare] Done. You can now run eval with --orders_embedded_pkl and --common_consumers_csv.")

@@ -446,6 +446,7 @@ One representative consumer per metric (selected near 95th percentile of gap).
 | fcs                     | 0.9000 | 0.7857    | -0.1143       |
 | composite_quality_score | 0.5424 | 0.7159    | +0.1735 **←** |
 
+
 ---
 
 # Prod Outperforms Retrieved: Side-by-Side Examples
@@ -454,375 +455,432 @@ One representative consumer per metric where **prod beats retrieved** (selected 
 For FCS (where prod generally wins), we show a case where **retrieved beats prod** instead.
 
 ---
+
 ## MMS (prod wins) — consumer 21782626, weekend_late_night
 
 **mms:** prod=0.6164 → retrieved=0.5912 (delta=-0.0253)
 
 ### Order History (2 items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | Kao Gra Prow | Thai |
-| 2 | Crab Rangoon | Thai |
+
+| #   | Item         | Cuisine |
+| --- | ------------ | ------- |
+| 1   | Kao Gra Prow | Thai    |
+| 2   | Crab Rangoon | Thai    |
+
 
 ### Carousels (prod=10, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Hearty rice plates | kai gra prow rice plate, chicken teriyaki rice plate, beef stir fry rice, spicy basil chicken rice, fried rice with chicken | thai fried rice | pad thai, spicy basil fried rice, fried rice with chicken |
-| 1 | Hearty fried chicken sandwiches | fried chicken sandwich, buffalo chicken sandwich, chicken parm sandwich, spicy crispy chicken, chicken tender sandwich | pad thai | Pad Thai, Thai noodles, spicy Pad Thai, chicken Pad Thai, shrimp Pad Thai |
-| 2 | Flavorful pizza | customized pizza, pepperoni pizza, BBQ chicken pizza, vegetable pizza, four cheese pizza | vegetable samosas | vegetable samosas, spiced potato samosas, crispy vegetable pastries |
-| 3 | Savory Indian snacks | vegetable samosas, chicken pakoras, pav bhaji, paneer tikka, chicken chaat | indian butter chicken | butter chicken, chicken tikka masala, paneer butter masala, chicken korma, tandoori chicken |
-| 4 | Gourmet customizable pizzas | bbq chicken pizza, pepperoni pizza, vegetable supreme pizza, meat lovers pizza, cheese pizza | american fried chicken | crispy fried chicken, spicy chicken wings, mild chicken wings, popcorn chicken, chicken tenders |
-| 5 | Spicy chicken wings | buffalo chicken wings, lemon pepper wings, barbecue wings, honey garlic wings, teriyaki wings | classic combo meals | burger combos, chicken sandwich combos, wing combo meals, taco combos, wrap combo meals |
-| 6 | Savory Thai bites | pad thai, chicken larb, crab rangoon, tom yum soup, spicy basil chicken | pasta primavera | vegetable pasta, creamy pasta with chicken, spaghetti marinara, pasta with garlic and olive oil |
-| 7 | Delicious curries | butter chicken, chicken tikka masala, vegetable curry, lamb curry, paneer tikka masala | gourmet calzones | chicken calzone, pepperoni calzone, four cheese calzone, vegetable calzone, spicy chicken calzone |
-| 8 | Flavorful Thai street food | pad see ew, khao soi, som tam salad, moshi balls, grilled pork skewers | indulgent cheesecakes | strawberry cheesecake, classic cheesecake, chocolate cheesecake, blueberry cheesecake, key lime cheesecake |
-| 9 | Comfort food plates | meatloaf plate, pot roast plate, chicken fried steak, country fried steak, shepherd's pie | comforting milkshakes | chocolate milkshakes, vanilla milkshakes, strawberry milkshakes |
+
+| Rank | Prod Title                      | Prod Food Types                                                                                                             | Retr Title             | Retr Food Types                                                                                            |
+| ---- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| 1    | Hearty rice plates              | kai gra prow rice plate, chicken teriyaki rice plate, beef stir fry rice, spicy basil chicken rice, fried rice with chicken | thai fried rice        | pad thai, spicy basil fried rice, fried rice with chicken                                                  |
+| 1    | Hearty fried chicken sandwiches | fried chicken sandwich, buffalo chicken sandwich, chicken parm sandwich, spicy crispy chicken, chicken tender sandwich      | pad thai               | Pad Thai, Thai noodles, spicy Pad Thai, chicken Pad Thai, shrimp Pad Thai                                  |
+| 2    | Flavorful pizza                 | customized pizza, pepperoni pizza, BBQ chicken pizza, vegetable pizza, four cheese pizza                                    | vegetable samosas      | vegetable samosas, spiced potato samosas, crispy vegetable pastries                                        |
+| 3    | Savory Indian snacks            | vegetable samosas, chicken pakoras, pav bhaji, paneer tikka, chicken chaat                                                  | indian butter chicken  | butter chicken, chicken tikka masala, paneer butter masala, chicken korma, tandoori chicken                |
+| 4    | Gourmet customizable pizzas     | bbq chicken pizza, pepperoni pizza, vegetable supreme pizza, meat lovers pizza, cheese pizza                                | american fried chicken | crispy fried chicken, spicy chicken wings, mild chicken wings, popcorn chicken, chicken tenders            |
+| 5    | Spicy chicken wings             | buffalo chicken wings, lemon pepper wings, barbecue wings, honey garlic wings, teriyaki wings                               | classic combo meals    | burger combos, chicken sandwich combos, wing combo meals, taco combos, wrap combo meals                    |
+| 6    | Savory Thai bites               | pad thai, chicken larb, crab rangoon, tom yum soup, spicy basil chicken                                                     | pasta primavera        | vegetable pasta, creamy pasta with chicken, spaghetti marinara, pasta with garlic and olive oil            |
+| 7    | Delicious curries               | butter chicken, chicken tikka masala, vegetable curry, lamb curry, paneer tikka masala                                      | gourmet calzones       | chicken calzone, pepperoni calzone, four cheese calzone, vegetable calzone, spicy chicken calzone          |
+| 8    | Flavorful Thai street food      | pad see ew, khao soi, som tam salad, moshi balls, grilled pork skewers                                                      | indulgent cheesecakes  | strawberry cheesecake, classic cheesecake, chocolate cheesecake, blueberry cheesecake, key lime cheesecake |
+| 9    | Comfort food plates             | meatloaf plate, pot roast plate, chicken fried steak, country fried steak, shepherd's pie                                   | comforting milkshakes  | chocolate milkshakes, vanilla milkshakes, strawberry milkshakes                                            |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.6164 | 0.5912 | -0.0253 **←** |
-| sr_at_3 | 1.0000 | 1.0000 | +0.0000 |
-| sr_at_5 | 1.0000 | 1.0000 | +0.0000 |
-| sr_at_10 | 1.0000 | 1.0000 | +0.0000 |
-| ccr | 1.0000 | 1.0000 | +0.0000 |
-| ild | 0.4887 | 0.5994 | +0.1107 |
-| ohcd | 0.2000 | 0.2000 | +0.0000 |
-| tmc | 0.6001 | 0.6835 | +0.0834 |
-| fcs | 0.9286 | 0.7714 | -0.1571 |
-| composite_quality_score | 0.7215 | 0.7164 | -0.0050 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.6164 | 0.5912    | -0.0253 **←** |
+| sr_at_3                 | 1.0000 | 1.0000    | +0.0000       |
+| sr_at_5                 | 1.0000 | 1.0000    | +0.0000       |
+| sr_at_10                | 1.0000 | 1.0000    | +0.0000       |
+| ccr                     | 1.0000 | 1.0000    | +0.0000       |
+| ild                     | 0.4887 | 0.5994    | +0.1107       |
+| ohcd                    | 0.2000 | 0.2000    | +0.0000       |
+| tmc                     | 0.6001 | 0.6835    | +0.0834       |
+| fcs                     | 0.9286 | 0.7714    | -0.1571       |
+| composite_quality_score | 0.7215 | 0.7164    | -0.0050       |
+
 
 ---
+
 ## SR_AT_5 (prod wins) — consumer 10713171, weekend_dinner
 
 **sr_at_5:** prod=0.5556 → retrieved=0.3889 (delta=-0.1667)
 
 ### Order History (12+6 more items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | Chili | American |
-| 2 | Chili Cheese Dog | American |
-| 3 | Beef / Cheese Enchiladas | Mexican |
-| 4 | Short Bridge | Italian |
-| 5 | Steamed Fresh Vegetables | Japanese |
-| 6 | Onion Rings | American |
-| 7 | Agua Fresca | Mexican |
-| 8 | Chef's Choice 10 pcs of Sashimi | Japanese |
-| 9 | Mini Pecan Pie | Southern American |
-| 10 | Dragon Roll | Japanese |
-| 11 | Plain Quesadilla | Mexican |
-| 12 | A7. Crab Cheese Puff (8 Pcs.) | Chinese |
+
+| #   | Item                            | Cuisine           |
+| --- | ------------------------------- | ----------------- |
+| 1   | Chili                           | American          |
+| 2   | Chili Cheese Dog                | American          |
+| 3   | Beef / Cheese Enchiladas        | Mexican           |
+| 4   | Short Bridge                    | Italian           |
+| 5   | Steamed Fresh Vegetables        | Japanese          |
+| 6   | Onion Rings                     | American          |
+| 7   | Agua Fresca                     | Mexican           |
+| 8   | Chef's Choice 10 pcs of Sashimi | Japanese          |
+| 9   | Mini Pecan Pie                  | Southern American |
+| 10  | Dragon Roll                     | Japanese          |
+| 11  | Plain Quesadilla                | Mexican           |
+| 12  | A7. Crab Cheese Puff (8 Pcs.)   | Chinese           |
+
 
 ### Carousels (prod=10, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Southern BBQ classics | pulled pork sandwiches, smoked brisket plates, BBQ chicken, ribs, fried chicken | hearty american entrees | cheeseburger, fried chicken sandwich, meatloaf, pork chops, steak dinner |
-| 1 | Spicy General Tso's chicken | General Tso's chicken, Kung Pao chicken, spicy sesame chicken, orange chicken, sweet and sour chicken | baby back ribs | pork ribs, barbecue ribs, spicy ribs, smoked ribs, rib platter |
-| 2 | Authentic Mexican tacos | carne asada tacos, al pastor tacos, fish tacos, barbacoa tacos, chicken tinga tacos | general tso chicken | General Tso chicken, sesame chicken, orange chicken, chicken fried rice, beef broccoli |
-| 3 | Hearty gourmet burgers | classic cheeseburgers, bacon burgers, spicy jalapeno burgers, barbecue burgers, mushroom swiss burgers | gourmet churros | classic churros, spiced churros, churros with chocolate, churros with caramel, churros with strawberry sauce |
-| 4 | Sushi and rolls | California rolls, spicy tuna rolls, tempura rolls, salmon sashimi, gyoza | sausage pizzas | spicy fennel sausage pizza, italian sausage pizza, pepperoni pizza, meatball pizza, cheese pizza |
-| 5 | Gourmet pizza options | deep dish pizza, Margherita pizza, BBQ chicken pizza, vegetable pizza, pepperoni pizza | quesadillas with cheese | cheese quesadillas, chicken quesadillas, beef quesadillas, vegetarian quesadillas, spicy quesadillas |
-| 6 | Flavorful Mediterranean fare | shawarma plates, falafel wraps, lamb gyros, hummus and pita, tabbouleh | savory crab wontons | crab cheese wontons, crab wontons, fried crab dumplings |
-| 7 | Savory fried chicken | spicy fried chicken, buttermilk fried chicken, chicken tenders, fried chicken sandwiches, fried chicken wings | savory mexican enchiladas | chicken enchiladas, beef enchiladas, vegetable enchiladas, cheese enchiladas |
-| 8 | Vibrant vegetarian dishes | vegetable curry, stuffed bell peppers, chickpea stew, veggie sushi, vegetable stir fry | agua frescas | agua frescas, fruit-based drinks, refreshing aguas, natural fruit juices |
-| 9 | Indulgent desserts | chocolate cake, cheesecake, tiramisu, mousse, union churros | chicken fried chicken | crispy fried chicken, buttermilk fried chicken, bbq chicken plates, fried chicken dinners, spicy fried chicken |
+
+| Rank | Prod Title                   | Prod Food Types                                                                                               | Retr Title                | Retr Food Types                                                                                                |
+| ---- | ---------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 1    | Southern BBQ classics        | pulled pork sandwiches, smoked brisket plates, BBQ chicken, ribs, fried chicken                               | hearty american entrees   | cheeseburger, fried chicken sandwich, meatloaf, pork chops, steak dinner                                       |
+| 1    | Spicy General Tso's chicken  | General Tso's chicken, Kung Pao chicken, spicy sesame chicken, orange chicken, sweet and sour chicken         | baby back ribs            | pork ribs, barbecue ribs, spicy ribs, smoked ribs, rib platter                                                 |
+| 2    | Authentic Mexican tacos      | carne asada tacos, al pastor tacos, fish tacos, barbacoa tacos, chicken tinga tacos                           | general tso chicken       | General Tso chicken, sesame chicken, orange chicken, chicken fried rice, beef broccoli                         |
+| 3    | Hearty gourmet burgers       | classic cheeseburgers, bacon burgers, spicy jalapeno burgers, barbecue burgers, mushroom swiss burgers        | gourmet churros           | classic churros, spiced churros, churros with chocolate, churros with caramel, churros with strawberry sauce   |
+| 4    | Sushi and rolls              | California rolls, spicy tuna rolls, tempura rolls, salmon sashimi, gyoza                                      | sausage pizzas            | spicy fennel sausage pizza, italian sausage pizza, pepperoni pizza, meatball pizza, cheese pizza               |
+| 5    | Gourmet pizza options        | deep dish pizza, Margherita pizza, BBQ chicken pizza, vegetable pizza, pepperoni pizza                        | quesadillas with cheese   | cheese quesadillas, chicken quesadillas, beef quesadillas, vegetarian quesadillas, spicy quesadillas           |
+| 6    | Flavorful Mediterranean fare | shawarma plates, falafel wraps, lamb gyros, hummus and pita, tabbouleh                                        | savory crab wontons       | crab cheese wontons, crab wontons, fried crab dumplings                                                        |
+| 7    | Savory fried chicken         | spicy fried chicken, buttermilk fried chicken, chicken tenders, fried chicken sandwiches, fried chicken wings | savory mexican enchiladas | chicken enchiladas, beef enchiladas, vegetable enchiladas, cheese enchiladas                                   |
+| 8    | Vibrant vegetarian dishes    | vegetable curry, stuffed bell peppers, chickpea stew, veggie sushi, vegetable stir fry                        | agua frescas              | agua frescas, fruit-based drinks, refreshing aguas, natural fruit juices                                       |
+| 9    | Indulgent desserts           | chocolate cake, cheesecake, tiramisu, mousse, union churros                                                   | chicken fried chicken     | crispy fried chicken, buttermilk fried chicken, bbq chicken plates, fried chicken dinners, spicy fried chicken |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.4923 | 0.5189 | +0.0265 |
-| sr_at_3 | 0.4444 | 0.2778 | -0.1667 |
-| sr_at_5 | 0.5556 | 0.3889 | -0.1667 **←** |
-| sr_at_10 | 0.7222 | 0.6667 | -0.0556 |
-| ccr | 1.0000 | 1.0000 | +0.0000 |
-| ild | 0.5517 | 0.5847 | +0.0329 |
-| ohcd | 0.9000 | 0.9000 | +0.0000 |
-| tmc | 0.5863 | 0.6324 | +0.0461 |
-| fcs | 0.8714 | 0.7714 | -0.1000 |
-| composite_quality_score | 0.6956 | 0.6711 | -0.0245 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.4923 | 0.5189    | +0.0265       |
+| sr_at_3                 | 0.4444 | 0.2778    | -0.1667       |
+| sr_at_5                 | 0.5556 | 0.3889    | -0.1667 **←** |
+| sr_at_10                | 0.7222 | 0.6667    | -0.0556       |
+| ccr                     | 1.0000 | 1.0000    | +0.0000       |
+| ild                     | 0.5517 | 0.5847    | +0.0329       |
+| ohcd                    | 0.9000 | 0.9000    | +0.0000       |
+| tmc                     | 0.5863 | 0.6324    | +0.0461       |
+| fcs                     | 0.8714 | 0.7714    | -0.1000       |
+| composite_quality_score | 0.6956 | 0.6711    | -0.0245       |
+
 
 ---
+
 ## CCR (prod wins) — consumer 14678074, weekend_lunch
 
 **ccr:** prod=1.0000 → retrieved=0.6667 (delta=-0.3333)
 
 ### Order History (12+2 more items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | Grilled Chicken Street Taco | Mexican |
-| 2 | Chicken Teriyaki Bowl | Japanese |
-| 3 | French Fries | American |
-| 4 | Del Scorcho - Medium | Mexican |
-| 5 | Del Inferno - Hot | Mexican |
-| 6 | Snack Taco | Mexican |
-| 7 | Crab Rangoons | Japanese |
-| 8 | Picadillo |  |
-| 9 | Enchilada Plates |  |
-| 10 | Tamales |  |
-| 11 | Double Cheeseburger | American |
-| 12 | Epic Carne Asada Steak Fresh Guacamole Burrito | Mexican |
+
+| #   | Item                                           | Cuisine  |
+| --- | ---------------------------------------------- | -------- |
+| 1   | Grilled Chicken Street Taco                    | Mexican  |
+| 2   | Chicken Teriyaki Bowl                          | Japanese |
+| 3   | French Fries                                   | American |
+| 4   | Del Scorcho - Medium                           | Mexican  |
+| 5   | Del Inferno - Hot                              | Mexican  |
+| 6   | Snack Taco                                     | Mexican  |
+| 7   | Crab Rangoons                                  | Japanese |
+| 8   | Picadillo                                      |          |
+| 9   | Enchilada Plates                               |          |
+| 10  | Tamales                                        |          |
+| 11  | Double Cheeseburger                            | American |
+| 12  | Epic Carne Asada Steak Fresh Guacamole Burrito | Mexican  |
+
 
 ### Carousels (prod=10, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Mexican tamales | steamed tamales, pork tamales, chicken tamales, vegetarian tamales, beef tamales | tangy chicken dishes | orange chicken, sweet and sour chicken, lemon chicken, honey sesame chicken, spicy garlic chicken |
-| 1 | Mediterranean gyros | chicken gyros, beef gyros, lamb gyros, veggie gyros, gyros platter | savory enchilada plates | chicken enchiladas, beef enchiladas, vegetable enchiladas, cheese enchiladas, seafood enchiladas |
-| 2 | Barbecue plates | brisket plate, pulled pork plate, ribs plate, chicken plate, bbq platter | teriyaki chicken bowls | teriyaki chicken bowl, chicken donburi, beef teriyaki bowl, vegetable teriyaki, grilled chicken bowl |
-| 3 | Spicy noodle dishes | pad Thai, spicy noodles, ramen, udon bowls, chili garlic noodles | chicken street tacos | chicken street tacos, al pastor tacos, grilled steak tacos, vegetarian street tacos, carnitas street tacos |
-| 4 | Baja fish tacos | crispy fish tacos, battered fish tacos, grilled fish tacos, spicy fish tacos, cajun fish tacos | mexican tamales | chicken tamales, pork tamales, cheese tamales, sweet tamales, vegetable tamales |
-| 5 | Savory rice bowls | chicken rice bowl, beef rice bowl, pork rice bowl, veggie rice bowl, spicy rice bowl | grilled beef tacos | carne asada tacos, beef tacos, beef street tacos, chicken tacos, taco al pastor |
-| 6 | Middle Eastern shawarma | chicken shawarma, beef shawarma, lamb shawarma, shawarma wraps, shawarma platters | mexican platillos | asada platillos, camaron platillos, chicken platillos, pork platillos, vegetable platillos |
-| 7 | Poke bowls | salmon poke, tuna poke, spicy poke, vegetable poke, miso poke | burritos de carne asada | burritos de carne asada, steak burrito, grilled steak burrito, carne asada bowl |
-| 8 | Sizzling fajitas | chicken fajitas, steak fajitas, shrimp fajitas, vegetarian fajitas, mixed fajitas | crab rangoons | fried crab rangoons, cream cheese rangoons, spicy crab rangoons |
-| 9 | Thai curry dishes | green curry, red curry, yellow curry, massaman curry, panang curry | rice dishes | fried rice, chicken fried rice, beef stir-fried rice, rice bowl, burrito rice bowl |
+
+| Rank | Prod Title              | Prod Food Types                                                                                | Retr Title              | Retr Food Types                                                                                            |
+| ---- | ----------------------- | ---------------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| 1    | Mexican tamales         | steamed tamales, pork tamales, chicken tamales, vegetarian tamales, beef tamales               | tangy chicken dishes    | orange chicken, sweet and sour chicken, lemon chicken, honey sesame chicken, spicy garlic chicken          |
+| 1    | Mediterranean gyros     | chicken gyros, beef gyros, lamb gyros, veggie gyros, gyros platter                             | savory enchilada plates | chicken enchiladas, beef enchiladas, vegetable enchiladas, cheese enchiladas, seafood enchiladas           |
+| 2    | Barbecue plates         | brisket plate, pulled pork plate, ribs plate, chicken plate, bbq platter                       | teriyaki chicken bowls  | teriyaki chicken bowl, chicken donburi, beef teriyaki bowl, vegetable teriyaki, grilled chicken bowl       |
+| 3    | Spicy noodle dishes     | pad Thai, spicy noodles, ramen, udon bowls, chili garlic noodles                               | chicken street tacos    | chicken street tacos, al pastor tacos, grilled steak tacos, vegetarian street tacos, carnitas street tacos |
+| 4    | Baja fish tacos         | crispy fish tacos, battered fish tacos, grilled fish tacos, spicy fish tacos, cajun fish tacos | mexican tamales         | chicken tamales, pork tamales, cheese tamales, sweet tamales, vegetable tamales                            |
+| 5    | Savory rice bowls       | chicken rice bowl, beef rice bowl, pork rice bowl, veggie rice bowl, spicy rice bowl           | grilled beef tacos      | carne asada tacos, beef tacos, beef street tacos, chicken tacos, taco al pastor                            |
+| 6    | Middle Eastern shawarma | chicken shawarma, beef shawarma, lamb shawarma, shawarma wraps, shawarma platters              | mexican platillos       | asada platillos, camaron platillos, chicken platillos, pork platillos, vegetable platillos                 |
+| 7    | Poke bowls              | salmon poke, tuna poke, spicy poke, vegetable poke, miso poke                                  | burritos de carne asada | burritos de carne asada, steak burrito, grilled steak burrito, carne asada bowl                            |
+| 8    | Sizzling fajitas        | chicken fajitas, steak fajitas, shrimp fajitas, vegetarian fajitas, mixed fajitas              | crab rangoons           | fried crab rangoons, cream cheese rangoons, spicy crab rangoons                                            |
+| 9    | Thai curry dishes       | green curry, red curry, yellow curry, massaman curry, panang curry                             | rice dishes             | fried rice, chicken fried rice, beef stir-fried rice, rice bowl, burrito rice bowl                         |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.4925 | 0.5837 | +0.0913 |
-| sr_at_3 | 0.3571 | 0.2857 | -0.0714 |
-| sr_at_5 | 0.6429 | 0.4286 | -0.2143 |
-| sr_at_10 | 0.7143 | 0.7857 | +0.0714 |
-| ccr | 1.0000 | 0.6667 | -0.3333 **←** |
-| ild | 0.5806 | 0.5239 | -0.0568 |
-| ohcd | 0.7000 | 1.0000 | +0.3000 |
-| tmc | 0.6470 | 0.6900 | +0.0431 |
-| fcs | 0.9714 | 0.8000 | -0.1714 |
-| composite_quality_score | 0.7157 | 0.6569 | -0.0588 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.4925 | 0.5837    | +0.0913       |
+| sr_at_3                 | 0.3571 | 0.2857    | -0.0714       |
+| sr_at_5                 | 0.6429 | 0.4286    | -0.2143       |
+| sr_at_10                | 0.7143 | 0.7857    | +0.0714       |
+| ccr                     | 1.0000 | 0.6667    | -0.3333 **←** |
+| ild                     | 0.5806 | 0.5239    | -0.0568       |
+| ohcd                    | 0.7000 | 1.0000    | +0.3000       |
+| tmc                     | 0.6470 | 0.6900    | +0.0431       |
+| fcs                     | 0.9714 | 0.8000    | -0.1714       |
+| composite_quality_score | 0.7157 | 0.6569    | -0.0588       |
+
 
 ---
+
 ## ILD (prod wins) — consumer 2042923, weekend_lunch
 
 **ild:** prod=0.6098 → retrieved=0.5452 (delta=-0.0646)
 
 ### Order History (12+5 more items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | 椒鹽排 / Crispy Pork Chops with Peppery Salt / | Chinese, Shanghainese |
-| 2 | 乾煸四季豆 / Dry Sautéed String Beans / | Chinese, Shanghainese |
-| 3 | N.1.2     Stewed Pork Ribs Noodle 红烧排骨面 | Chinese |
-| 4 | 芥藍牛肉 / Sliced Beef with Broccoli / | Chinese, Shanghainese |
-| 5 | 蟹粉小籠包 / Crab Meat with Pork Steamed Soup Buns (6 Pieces) / | Chinese, Shanghainese |
-| 6 | Boneless Meal Deal For 2 | American |
-| 7 | 開洋白菜 / Chinese Cabbage with Dried Shrimps / | Chinese, Shanghainese |
-| 8 | 52 oz Simply Lemonade® | American |
-| 9 | Spicy Beef Noodle Soup 川味牛腩汤面 | Chinese |
-| 10 | Side of Flavor | American |
-| 11 | apple 'n greens™  | American |
-| 12 | Bigger Plate | Chinese |
+
+| #   | Item                                                       | Cuisine               |
+| --- | ---------------------------------------------------------- | --------------------- |
+| 1   | 椒鹽排 / Crispy Pork Chops with Peppery Salt /                | Chinese, Shanghainese |
+| 2   | 乾煸四季豆 / Dry Sautéed String Beans /                         | Chinese, Shanghainese |
+| 3   | N.1.2 Stewed Pork Ribs Noodle 红烧排骨面                        | Chinese               |
+| 4   | 芥藍牛肉 / Sliced Beef with Broccoli /                         | Chinese, Shanghainese |
+| 5   | 蟹粉小籠包 / Crab Meat with Pork Steamed Soup Buns (6 Pieces) / | Chinese, Shanghainese |
+| 6   | Boneless Meal Deal For 2                                   | American              |
+| 7   | 開洋白菜 / Chinese Cabbage with Dried Shrimps /                | Chinese, Shanghainese |
+| 8   | 52 oz Simply Lemonade®                                     | American              |
+| 9   | Spicy Beef Noodle Soup 川味牛腩汤面                              | Chinese               |
+| 10  | Side of Flavor                                             | American              |
+| 11  | apple 'n greens™                                           | American              |
+| 12  | Bigger Plate                                               | Chinese               |
+
 
 ### Carousels (prod=9, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Vegetarian dumplings | pork dumplings, vegetable dumplings, steamed dumplings, pan-fried dumplings, soup dumplings | boneless chicken meals | chickenjoy meals, fried chicken combo, chicken and rice combo, chicken bucket meals, chicken sandwich meals |
-| 1 | Japanese rice bowls | chicken teriyaki bowl, sushi rice bowl, beef gyudon, salmon donburi, vegetable donburi | traditional chinese dishes | beef noodle soup, sweet and sour pork, kung pao chicken, mapo tofu, fried rice |
-| 2 | Pulled pork sandwiches | pulled pork sliders, BBQ pork sandwiches, pork hoagies | salt and pepper shrimp | salt and pepper shrimp, szechuan shrimp, garlic shrimp |
-| 3 | Malaysian flavors | nasi lemak, char kway teow, roti canai | rice plates with meat | beef rice plate, chicken rice plate, pork rice plate, shrimp rice plate, mixed meat rice plate |
-| 4 | Spicy ramen bowls | tonkotsu ramen, spicy miso ramen, vegetarian ramen | soup dumplings | soup dumplings, pan-fried dumplings, steamed dumplings, pork dumplings, vegetable dumplings |
-| 5 | Sichuan noodle dishes | spicy wonton noodles, dan dan noodles, Sichuan cold noodles | hunan stir-fry dishes | Hunan style sautéed beef, spicy Hunan chicken, Hunan-style noodle stir-fry, ginger scallion rice, stir-fried green beans |
-| 6 | Gourmet salads | quinoa salad, Mediterranean salad, chicken caesar salad | pork chop over rice | pork chop over rice, pork belly rice, fried pork chop, grilled pork over rice, sweet and sour pork |
-| 7 | Korean BBQ options | bulgogi, galbi, Korean fried chicken | creative dumplings | vegan dumplings, tofu potstickers, vegetable gyoza, Thai dumplings, mushroom dumplings |
-| 9 | Thai rice dishes | pad thai, fried rice, green curry rice | braised beef noodles | beef noodle soup, braised beef rice, beef stir-fried noodles, spicy braised beef noodles |
-| 10 | — | — | vegetarian indian fare | saag paneer, paneer tikka masala, vegetarian curry, chana masala, dal makhani |
+
+| Rank | Prod Title             | Prod Food Types                                                                             | Retr Title                 | Retr Food Types                                                                                                          |
+| ---- | ---------------------- | ------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| 1    | Vegetarian dumplings   | pork dumplings, vegetable dumplings, steamed dumplings, pan-fried dumplings, soup dumplings | boneless chicken meals     | chickenjoy meals, fried chicken combo, chicken and rice combo, chicken bucket meals, chicken sandwich meals              |
+| 1    | Japanese rice bowls    | chicken teriyaki bowl, sushi rice bowl, beef gyudon, salmon donburi, vegetable donburi      | traditional chinese dishes | beef noodle soup, sweet and sour pork, kung pao chicken, mapo tofu, fried rice                                           |
+| 2    | Pulled pork sandwiches | pulled pork sliders, BBQ pork sandwiches, pork hoagies                                      | salt and pepper shrimp     | salt and pepper shrimp, szechuan shrimp, garlic shrimp                                                                   |
+| 3    | Malaysian flavors      | nasi lemak, char kway teow, roti canai                                                      | rice plates with meat      | beef rice plate, chicken rice plate, pork rice plate, shrimp rice plate, mixed meat rice plate                           |
+| 4    | Spicy ramen bowls      | tonkotsu ramen, spicy miso ramen, vegetarian ramen                                          | soup dumplings             | soup dumplings, pan-fried dumplings, steamed dumplings, pork dumplings, vegetable dumplings                              |
+| 5    | Sichuan noodle dishes  | spicy wonton noodles, dan dan noodles, Sichuan cold noodles                                 | hunan stir-fry dishes      | Hunan style sautéed beef, spicy Hunan chicken, Hunan-style noodle stir-fry, ginger scallion rice, stir-fried green beans |
+| 6    | Gourmet salads         | quinoa salad, Mediterranean salad, chicken caesar salad                                     | pork chop over rice        | pork chop over rice, pork belly rice, fried pork chop, grilled pork over rice, sweet and sour pork                       |
+| 7    | Korean BBQ options     | bulgogi, galbi, Korean fried chicken                                                        | creative dumplings         | vegan dumplings, tofu potstickers, vegetable gyoza, Thai dumplings, mushroom dumplings                                   |
+| 9    | Thai rice dishes       | pad thai, fried rice, green curry rice                                                      | braised beef noodles       | beef noodle soup, braised beef rice, beef stir-fried noodles, spicy braised beef noodles                                 |
+| 10   | —                      | —                                                                                           | vegetarian indian fare     | saag paneer, paneer tikka masala, vegetarian curry, chana masala, dal makhani                                            |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.4287 | 0.4995 | +0.0708 |
-| sr_at_3 | 0.2353 | 0.5294 | +0.2941 |
-| sr_at_5 | 0.2941 | 0.5882 | +0.2941 |
-| sr_at_10 | 0.3529 | 0.6471 | +0.2941 |
-| ccr | 1.0000 | 0.6667 | -0.3333 |
-| ild | 0.6098 | 0.5452 | -0.0646 **←** |
-| ohcd | 0.4444 | 0.8000 | +0.3556 |
-| tmc | 0.6193 | 0.6876 | +0.0683 |
-| fcs | 0.8571 | 0.7286 | -0.1286 |
-| composite_quality_score | 0.6067 | 0.6351 | +0.0283 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.4287 | 0.4995    | +0.0708       |
+| sr_at_3                 | 0.2353 | 0.5294    | +0.2941       |
+| sr_at_5                 | 0.2941 | 0.5882    | +0.2941       |
+| sr_at_10                | 0.3529 | 0.6471    | +0.2941       |
+| ccr                     | 1.0000 | 0.6667    | -0.3333       |
+| ild                     | 0.6098 | 0.5452    | -0.0646 **←** |
+| ohcd                    | 0.4444 | 0.8000    | +0.3556       |
+| tmc                     | 0.6193 | 0.6876    | +0.0683       |
+| fcs                     | 0.8571 | 0.7286    | -0.1286       |
+| composite_quality_score | 0.6067 | 0.6351    | +0.0283       |
+
 
 ---
+
 ## OHCD (prod wins) — consumer 13555615, weekday_dinner
 
 **ohcd:** prod=0.4000 → retrieved=0.3000 (delta=-0.1000)
 
 ### Order History (6 items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | White Rice | Korean |
-| 2 | C2. Bbq Beef & Tofu Combo | Korean |
-| 3 | Spicy | Japanese, Korean |
-| 4 | T10. Beef & Octopus Tofu Soup | Korean |
-| 5 | Spicy Ramen / 라면 | Korean |
-| 6 | T8. Pork Tofu Soup | Korean |
+
+| #   | Item                          | Cuisine          |
+| --- | ----------------------------- | ---------------- |
+| 1   | White Rice                    | Korean           |
+| 2   | C2. Bbq Beef & Tofu Combo     | Korean           |
+| 3   | Spicy                         | Japanese, Korean |
+| 4   | T10. Beef & Octopus Tofu Soup | Korean           |
+| 5   | Spicy Ramen / 라면              | Korean           |
+| 6   | T8. Pork Tofu Soup            | Korean           |
+
 
 ### Carousels (prod=10, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Korean comfort stews | kimchi stew, beef bulgogi, spicy pork stew, seafood jjigae, chicken ginseng soup | beef tofu soup | beef tofu soup, spicy tofu soup, seafood tofu soup, vegetable tofu soup, chicken tofu soup |
-| 1 | Savory rice bowls | beef rice bowl, chicken teriyaki bowl, korean bibimbap, pork katsu don, seafood poke bowl | beef ramen | tonkotsu ramen, shoyu ramen, spicy ramen, beef yakisoba, chicken ramen |
-| 2 | Spicy Korean fried rice | kimchi fried rice, spicy pork fried rice, seafood fried rice, beef fried rice, vegetable fried rice | korean fried rice | kimchi fried rice, bulgogi fried rice, seafood fried rice, chicken fried rice, veggie fried rice |
-| 3 | Delicious noodle dishes | ramen, udon, jajangmyeon, pho, beef noodle soup | classic american combo meals | burger combo, fried chicken meal, fish sandwich meal, chicken nuggets combo, fried shrimp platter |
-| 4 | Hearty combo meals | burrito bowl, chicken parmesan with pasta, german sausage platter, korean fried chicken with rice, beef and broccoli | burrito bowl | burrito bowl, chicken burrito bowl, beef burrito bowl, carnitas burrito bowl, vegetarian burrito bowl |
-| 5 | Comforting ramen bowls | shoyu ramen, miso ramen, tonkotsu ramen, spicy ramen, vegan ramen | vietnamese vermicelli | grilled chicken vermicelli, pork vermicelli, crab vermicelli, bun bo hue, imperial rolls vermicelli |
-| 6 | Savory tacos and burritos | beef tacos, chicken burrito, pork carnitas taco, vegetarian burrito, fish tacos | classic pepperoni pizzas | classic pepperoni pizza, deep dish pizza, stuffed crust pizza, meat lovers pizza, supreme pizza |
-| 7 | Flavorful curry dishes | chicken curry, beef curry, vegetable curry, lamb curry, green curry | tasty desserts | cinnamon twists, cookies, brownies, churros, cheesecake |
-| 8 | American-style comfort food | mac and cheese, chicken fried steak, meatloaf, pot roast, shepherd's pie | chocolate shakes | large chocolate shakes, frozen chocolate drinks, rich chocolate shakes, decadent chocolate shakes, smooth chocolate shakes |
-| 9 | Rich and creamy pasta | alfredo pasta, carbonara, fettuccine alfredo, pasta primavera, baked ziti | milk tea | brown sugar milk tea, classic milk tea, fruit milk tea, milk tea with boba, winter melon milk tea |
+
+| Rank | Prod Title                  | Prod Food Types                                                                                                      | Retr Title                   | Retr Food Types                                                                                                            |
+| ---- | --------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 1    | Korean comfort stews        | kimchi stew, beef bulgogi, spicy pork stew, seafood jjigae, chicken ginseng soup                                     | beef tofu soup               | beef tofu soup, spicy tofu soup, seafood tofu soup, vegetable tofu soup, chicken tofu soup                                 |
+| 1    | Savory rice bowls           | beef rice bowl, chicken teriyaki bowl, korean bibimbap, pork katsu don, seafood poke bowl                            | beef ramen                   | tonkotsu ramen, shoyu ramen, spicy ramen, beef yakisoba, chicken ramen                                                     |
+| 2    | Spicy Korean fried rice     | kimchi fried rice, spicy pork fried rice, seafood fried rice, beef fried rice, vegetable fried rice                  | korean fried rice            | kimchi fried rice, bulgogi fried rice, seafood fried rice, chicken fried rice, veggie fried rice                           |
+| 3    | Delicious noodle dishes     | ramen, udon, jajangmyeon, pho, beef noodle soup                                                                      | classic american combo meals | burger combo, fried chicken meal, fish sandwich meal, chicken nuggets combo, fried shrimp platter                          |
+| 4    | Hearty combo meals          | burrito bowl, chicken parmesan with pasta, german sausage platter, korean fried chicken with rice, beef and broccoli | burrito bowl                 | burrito bowl, chicken burrito bowl, beef burrito bowl, carnitas burrito bowl, vegetarian burrito bowl                      |
+| 5    | Comforting ramen bowls      | shoyu ramen, miso ramen, tonkotsu ramen, spicy ramen, vegan ramen                                                    | vietnamese vermicelli        | grilled chicken vermicelli, pork vermicelli, crab vermicelli, bun bo hue, imperial rolls vermicelli                        |
+| 6    | Savory tacos and burritos   | beef tacos, chicken burrito, pork carnitas taco, vegetarian burrito, fish tacos                                      | classic pepperoni pizzas     | classic pepperoni pizza, deep dish pizza, stuffed crust pizza, meat lovers pizza, supreme pizza                            |
+| 7    | Flavorful curry dishes      | chicken curry, beef curry, vegetable curry, lamb curry, green curry                                                  | tasty desserts               | cinnamon twists, cookies, brownies, churros, cheesecake                                                                    |
+| 8    | American-style comfort food | mac and cheese, chicken fried steak, meatloaf, pot roast, shepherd's pie                                             | chocolate shakes             | large chocolate shakes, frozen chocolate drinks, rich chocolate shakes, decadent chocolate shakes, smooth chocolate shakes |
+| 9    | Rich and creamy pasta       | alfredo pasta, carbonara, fettuccine alfredo, pasta primavera, baked ziti                                            | milk tea                     | brown sugar milk tea, classic milk tea, fruit milk tea, milk tea with boba, winter melon milk tea                          |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.4709 | 0.5670 | +0.0961 |
-| sr_at_3 | 0.5000 | 1.0000 | +0.5000 |
-| sr_at_5 | 0.5000 | 1.0000 | +0.5000 |
-| sr_at_10 | 0.5000 | 1.0000 | +0.5000 |
-| ccr | 1.0000 | 1.0000 | +0.0000 |
-| ild | 0.5452 | 0.6239 | +0.0787 |
-| ohcd | 0.4000 | 0.3000 | -0.1000 **←** |
-| tmc | 0.6119 | 0.6858 | +0.0739 |
-| fcs | 0.9000 | 0.8143 | -0.0857 |
-| composite_quality_score | 0.6405 | 0.7308 | +0.0903 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.4709 | 0.5670    | +0.0961       |
+| sr_at_3                 | 0.5000 | 1.0000    | +0.5000       |
+| sr_at_5                 | 0.5000 | 1.0000    | +0.5000       |
+| sr_at_10                | 0.5000 | 1.0000    | +0.5000       |
+| ccr                     | 1.0000 | 1.0000    | +0.0000       |
+| ild                     | 0.5452 | 0.6239    | +0.0787       |
+| ohcd                    | 0.4000 | 0.3000    | -0.1000 **←** |
+| tmc                     | 0.6119 | 0.6858    | +0.0739       |
+| fcs                     | 0.9000 | 0.8143    | -0.0857       |
+| composite_quality_score | 0.6405 | 0.7308    | +0.0903       |
+
 
 ---
+
 ## TMC (prod wins) — consumer 18256056, weekday_breakfast
 
 **tmc:** prod=0.7435 → retrieved=0.6799 (delta=-0.0635)
 
 ### Order History (5 items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | Hash Browns | American |
-| 2 | Sausage, Egg & Cheese McGriddles® | American |
-| 3 | Santa Barbara Char | American |
-| 4 | Grilled Cheese | American |
-| 5 | Sausage McMuffin® with Egg | American |
+
+| #   | Item                              | Cuisine  |
+| --- | --------------------------------- | -------- |
+| 1   | Hash Browns                       | American |
+| 2   | Sausage, Egg & Cheese McGriddles® | American |
+| 3   | Santa Barbara Char                | American |
+| 4   | Grilled Cheese                    | American |
+| 5   | Sausage McMuffin® with Egg        | American |
+
 
 ### Carousels (prod=10, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Breakfast egg sandwiches | egg sandwich, sausage and egg sandwich, bacon egg sandwich, cheddar egg sandwich, turkey sausage sandwich | grilled cheese | classic grilled cheese, bacon grilled cheese, cheddar grilled cheese, pepper jack grilled cheese, mozzarella grilled cheese |
-| 1 | Fresh bagels and shmear | bagel with cream cheese, onion bagel, garlic bagel, everything bagel, plain bagel | sausage & egg muffins | sausage & egg muffin, bacon & egg muffin, egg muffin, cheddar muffin, veggie muffin |
-| 2 | Breakfast platters | breakfast platter, breakfast combo, mixed breakfast, eggs and sides, full breakfast | sausage and egg sandwiches | sausage egg sandwich, breakfast sausage muffin, sausage biscuit, egg and cheese croissant, sausage McGriddle |
-| 3 | Savory hash browns | hash browns, loaded hash browns, cheesy hash browns, baked hash browns | charbroiled burgers | double cheeseburger, bacon cheeseburger, guacamole bacon burger, western bacon cheeseburger |
-| 4 | Chicken breakfast combos | chicken sandwich combo, chicken and waffles, fried chicken breakfast, breakfast chicken biscuit | american-style breakfasts | big breakfast with pancakes, breakfast sausage platter, bacon and eggs plate, stuffed French toast, classic breakfast sandwich |
-| 5 | Pancakes and waffles | pancakes, waffles, buttermilk pancakes, maple syrup pancakes | bagels with cream cheese | lox bagel, plain bagel with cream cheese, everything bagel, flavored cream cheese bagel, sesame bagel |
-| 6 | Breakfast burritos | breakfast burrito, sausage breakfast burrito, chicken breakfast burrito, veggie breakfast burrito | savory soups | cream of chicken soup, grilled chicken and corn chowder, tomato garden vegetable soup |
-| 7 | Customizable breakfast bowls | breakfast bowl, eggs and avocado bowl, protein breakfast bowl, grain breakfast bowl | nova lox sandwiches | nova lox sandwiches, bagel sandwiches, cream cheese bagels, smoked salmon bagels, lox bagels |
-| 8 | Quick breakfast wraps | breakfast wrap, egg and cheese wrap, chicken wrap, veggie wrap | pho noodle soups | rare steak pho, brisket pho, house special pho, veggie pho, chicken pho |
-| 9 | Classic breakfast sandwiches | bacon egg and cheese, sausage egg and cheese, ham egg sandwich, breakfast biscuit | hearty chicken soups | chicken soup, vegetable chicken soup, creamy chicken soup, spicy chicken soup, chicken noodle soup |
+
+| Rank | Prod Title                   | Prod Food Types                                                                                           | Retr Title                 | Retr Food Types                                                                                                                |
+| ---- | ---------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1    | Breakfast egg sandwiches     | egg sandwich, sausage and egg sandwich, bacon egg sandwich, cheddar egg sandwich, turkey sausage sandwich | grilled cheese             | classic grilled cheese, bacon grilled cheese, cheddar grilled cheese, pepper jack grilled cheese, mozzarella grilled cheese    |
+| 1    | Fresh bagels and shmear      | bagel with cream cheese, onion bagel, garlic bagel, everything bagel, plain bagel                         | sausage & egg muffins      | sausage & egg muffin, bacon & egg muffin, egg muffin, cheddar muffin, veggie muffin                                            |
+| 2    | Breakfast platters           | breakfast platter, breakfast combo, mixed breakfast, eggs and sides, full breakfast                       | sausage and egg sandwiches | sausage egg sandwich, breakfast sausage muffin, sausage biscuit, egg and cheese croissant, sausage McGriddle                   |
+| 3    | Savory hash browns           | hash browns, loaded hash browns, cheesy hash browns, baked hash browns                                    | charbroiled burgers        | double cheeseburger, bacon cheeseburger, guacamole bacon burger, western bacon cheeseburger                                    |
+| 4    | Chicken breakfast combos     | chicken sandwich combo, chicken and waffles, fried chicken breakfast, breakfast chicken biscuit           | american-style breakfasts  | big breakfast with pancakes, breakfast sausage platter, bacon and eggs plate, stuffed French toast, classic breakfast sandwich |
+| 5    | Pancakes and waffles         | pancakes, waffles, buttermilk pancakes, maple syrup pancakes                                              | bagels with cream cheese   | lox bagel, plain bagel with cream cheese, everything bagel, flavored cream cheese bagel, sesame bagel                          |
+| 6    | Breakfast burritos           | breakfast burrito, sausage breakfast burrito, chicken breakfast burrito, veggie breakfast burrito         | savory soups               | cream of chicken soup, grilled chicken and corn chowder, tomato garden vegetable soup                                          |
+| 7    | Customizable breakfast bowls | breakfast bowl, eggs and avocado bowl, protein breakfast bowl, grain breakfast bowl                       | nova lox sandwiches        | nova lox sandwiches, bagel sandwiches, cream cheese bagels, smoked salmon bagels, lox bagels                                   |
+| 8    | Quick breakfast wraps        | breakfast wrap, egg and cheese wrap, chicken wrap, veggie wrap                                            | pho noodle soups           | rare steak pho, brisket pho, house special pho, veggie pho, chicken pho                                                        |
+| 9    | Classic breakfast sandwiches | bacon egg and cheese, sausage egg and cheese, ham egg sandwich, breakfast biscuit                         | hearty chicken soups       | chicken soup, vegetable chicken soup, creamy chicken soup, spicy chicken soup, chicken noodle soup                             |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.5478 | 0.6034 | +0.0556 |
-| sr_at_3 | 0.4000 | 0.6000 | +0.2000 |
-| sr_at_5 | 0.6000 | 0.8000 | +0.2000 |
-| sr_at_10 | 0.8000 | 0.8000 | +0.0000 |
-| ccr | 1.0000 | 1.0000 | +0.0000 |
-| ild | 0.4913 | 0.5802 | +0.0889 |
-| ohcd | 0.4000 | 0.3000 | -0.1000 |
-| tmc | 0.7435 | 0.6799 | -0.0635 **←** |
-| fcs | 0.8000 | 0.7429 | -0.0571 |
-| composite_quality_score | 0.6702 | 0.6921 | +0.0219 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.5478 | 0.6034    | +0.0556       |
+| sr_at_3                 | 0.4000 | 0.6000    | +0.2000       |
+| sr_at_5                 | 0.6000 | 0.8000    | +0.2000       |
+| sr_at_10                | 0.8000 | 0.8000    | +0.0000       |
+| ccr                     | 1.0000 | 1.0000    | +0.0000       |
+| ild                     | 0.4913 | 0.5802    | +0.0889       |
+| ohcd                    | 0.4000 | 0.3000    | -0.1000       |
+| tmc                     | 0.7435 | 0.6799    | -0.0635 **←** |
+| fcs                     | 0.8000 | 0.7429    | -0.0571       |
+| composite_quality_score | 0.6702 | 0.6921    | +0.0219       |
+
 
 ---
+
 ## FCS (prod wins) — consumer 8894279, weekday_late_night
 
 **fcs:** prod=0.8286 → retrieved=0.8000 (delta=-0.0286)
 
 ### Order History (3 items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | Ají Amarillo sauce (2oz) | Peruvian |
-| 2 | Quarter White | Peruvian |
-| 3 | Sprite | Peruvian |
+
+| #   | Item                     | Cuisine  |
+| --- | ------------------------ | -------- |
+| 1   | Ají Amarillo sauce (2oz) | Peruvian |
+| 2   | Quarter White            | Peruvian |
+| 3   | Sprite                   | Peruvian |
+
 
 ### Carousels (prod=10, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Gourmet burgers | cheeseburgers, double burgers, bacon burgers, veggie burgers, chicken burgers | peruvian lomo saltado | beef lomo saltado, chicken lomo saltado, vegetarian lomo saltado, seafood lomo saltado |
-| 1 | Loaded fries | cheese fries, bacon cheese fries, chili fries, garlic fries, poutine | american fried chicken | fried chicken, chicken tenders, chicken wings |
-| 2 | Pulled pork sandwiches | barbecue pork sandwiches, BBQ chicken sandwiches, pulled chicken sandwiches | rich cheesecakes | peanut butter cup cheesecake, chocolate fudge cheesecake, ny style cheesecake, strawberry cheesecake, turtle cheesecake |
-| 3 | Gourmet sandwiches | club sandwiches, turkey sandwiches, Italian sandwiches, cheese steaks | dessert crepes | chocolate crepes, strawberry crepes, banana Nutella crepes, lemon sugar crepes, sweet cream crepes |
-| 4 | Chow mein | chicken chow mein, beef chow mein, vegetable chow mein | steak and cheese sandwiches | cheesesteak sandwich, steak sandwich, chicken cheese sandwich, loaded meat sandwich, grilled chicken sandwich |
-| 5 | Szechuan chicken | spicy chicken stir fry, chicken with peanuts, garlic Szechuan chicken | poke bowls | build your poke bowl, spicy tuna poke, salmon poke bowl, ahi poke bowl, shrimp poke bowl |
-| 6 | Burgers and fries | cheeseburgers, chicken sandwiches, fries | classic grilled cheese | grilled cheese sandwich, three-cheese grilled cheese, toasted grilled cheese, cheddar grilled cheese, gourmet grilled cheese |
-| 7 | Savory pupusas | cheese pupusas, bean pupusas, pork pupusas | tacos de carne | beef tacos, carnitas tacos, barbacoa tacos, chicken tacos, fish tacos |
-| 8 | Spicy tacos | chicken tacos, beef tacos, pork tacos | cheeseburgers | cheeseburger meal, double cheeseburger, bacon cheeseburger, cheeseburger combos, classic cheeseburger |
-| 9 | Comfort food bowls | fried rice, rice and chicken, chicken noodle soup, mac and cheese | chicken pasta dishes | chicken fettuccine alfredo, chicken pesto penne, chicken parmesan pasta, chicken spaghetti, chicken carbonara |
+
+| Rank | Prod Title             | Prod Food Types                                                               | Retr Title                  | Retr Food Types                                                                                                              |
+| ---- | ---------------------- | ----------------------------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 1    | Gourmet burgers        | cheeseburgers, double burgers, bacon burgers, veggie burgers, chicken burgers | peruvian lomo saltado       | beef lomo saltado, chicken lomo saltado, vegetarian lomo saltado, seafood lomo saltado                                       |
+| 1    | Loaded fries           | cheese fries, bacon cheese fries, chili fries, garlic fries, poutine          | american fried chicken      | fried chicken, chicken tenders, chicken wings                                                                                |
+| 2    | Pulled pork sandwiches | barbecue pork sandwiches, BBQ chicken sandwiches, pulled chicken sandwiches   | rich cheesecakes            | peanut butter cup cheesecake, chocolate fudge cheesecake, ny style cheesecake, strawberry cheesecake, turtle cheesecake      |
+| 3    | Gourmet sandwiches     | club sandwiches, turkey sandwiches, Italian sandwiches, cheese steaks         | dessert crepes              | chocolate crepes, strawberry crepes, banana Nutella crepes, lemon sugar crepes, sweet cream crepes                           |
+| 4    | Chow mein              | chicken chow mein, beef chow mein, vegetable chow mein                        | steak and cheese sandwiches | cheesesteak sandwich, steak sandwich, chicken cheese sandwich, loaded meat sandwich, grilled chicken sandwich                |
+| 5    | Szechuan chicken       | spicy chicken stir fry, chicken with peanuts, garlic Szechuan chicken         | poke bowls                  | build your poke bowl, spicy tuna poke, salmon poke bowl, ahi poke bowl, shrimp poke bowl                                     |
+| 6    | Burgers and fries      | cheeseburgers, chicken sandwiches, fries                                      | classic grilled cheese      | grilled cheese sandwich, three-cheese grilled cheese, toasted grilled cheese, cheddar grilled cheese, gourmet grilled cheese |
+| 7    | Savory pupusas         | cheese pupusas, bean pupusas, pork pupusas                                    | tacos de carne              | beef tacos, carnitas tacos, barbacoa tacos, chicken tacos, fish tacos                                                        |
+| 8    | Spicy tacos            | chicken tacos, beef tacos, pork tacos                                         | cheeseburgers               | cheeseburger meal, double cheeseburger, bacon cheeseburger, cheeseburger combos, classic cheeseburger                        |
+| 9    | Comfort food bowls     | fried rice, rice and chicken, chicken noodle soup, mac and cheese             | chicken pasta dishes        | chicken fettuccine alfredo, chicken pesto penne, chicken parmesan pasta, chicken spaghetti, chicken carbonara                |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.3426 | 0.3529 | +0.0103 |
-| sr_at_3 | 0.0000 | 0.3333 | +0.3333 |
-| sr_at_5 | 0.0000 | 0.3333 | +0.3333 |
-| sr_at_10 | 0.3333 | 0.3333 | +0.0000 |
-| ccr | 1.0000 | 1.0000 | +0.0000 |
-| ild | 0.5424 | 0.6085 | +0.0661 |
-| ohcd | 0.3000 | 0.3000 | +0.0000 |
-| tmc | 0.6834 | 0.6487 | -0.0347 |
-| fcs | 0.8286 | 0.8000 | -0.0286 **←** |
-| composite_quality_score | 0.5295 | 0.5787 | +0.0492 |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.3426 | 0.3529    | +0.0103       |
+| sr_at_3                 | 0.0000 | 0.3333    | +0.3333       |
+| sr_at_5                 | 0.0000 | 0.3333    | +0.3333       |
+| sr_at_10                | 0.3333 | 0.3333    | +0.0000       |
+| ccr                     | 1.0000 | 1.0000    | +0.0000       |
+| ild                     | 0.5424 | 0.6085    | +0.0661       |
+| ohcd                    | 0.3000 | 0.3000    | +0.0000       |
+| tmc                     | 0.6834 | 0.6487    | -0.0347       |
+| fcs                     | 0.8286 | 0.8000    | -0.0286 **←** |
+| composite_quality_score | 0.5295 | 0.5787    | +0.0492       |
+
 
 ---
+
 ## COMPOSITE_QUALITY_SCORE (prod wins) — consumer 16621859, weekend_breakfast
 
 **composite_quality_score:** prod=0.4253 → retrieved=0.3747 (delta=-0.0507)
 
 ### Order History (2 items)
 
-| # | Item | Cuisine |
-|---|---|---|
-| 1 | Bloom Haus™ Whimsical Bouquet - B |  |
-| 2 | Dozen Red Rose Arrangement |  |
+
+| #   | Item                              | Cuisine |
+| --- | --------------------------------- | ------- |
+| 1   | Bloom Haus™ Whimsical Bouquet - B |         |
+| 2   | Dozen Red Rose Arrangement        |         |
+
 
 ### Carousels (prod=9, retrieved=10)
 
-| Rank | Prod Title | Prod Food Types | Retr Title | Retr Food Types |
-|---|---|---|---|---|
-| 1 | Breakfast burritos | ham egg cheese burrito, bacon egg cheese burrito, sausage egg cheese burrito, chorizo egg burrito, breakfast burrito | sausage & egg muffins | sausage muffins, egg & cheese muffins, breakfast ham muffins |
-| 1 | Gourmet sandwiches | bacon egg sandwich, egg and cheese sandwich, sausage egg sandwich, breakfast sandwich, turkey bacon sandwich | classic breakfast burritos | hash brown scramble burrito, breakfast burrito, bacon breakfast burrito, sausage breakfast burrito, veggie burrito |
-| 2 | Hearty breakfast platters | breakfast platter, vegetable breakfast platter, meat breakfast platter, full breakfast, egg and meat platter | bacon and egg wraps | bacon egg wraps, breakfast sausage wraps, chicken and egg wraps |
-| 3 | Pancakes and waffles | buttermilk pancakes, blueberry pancakes, waffles with syrup, banana pancakes, chocolate chip pancakes | eggs and bacon dishes | eggs benedict, scrambled eggs with bacon, bacon and egg hash, breakfast egg platters, bacon sunrise bowls |
-| 4 | French toast | classic french toast, stuffed french toast, banana bread french toast, cinnamon roll french toast, churro french toast | fluffy waffles and pancakes | buttermilk pancakes, Belgian waffles, banana pancakes, fruity waffles, chocolate chip pancakes |
-| 6 | Classic bagels | plain bagel with cream cheese, everything bagel, smoked salmon bagel, egg and cheese bagel, bacon egg bagel | savory wings | buffalo wings, spicy garlic wings, parmesan wings, honey sriracha wings, teriyaki wings |
-| 7 | French toast options | classic french toast, stuffed french toast, cinnamon french toast, banana french toast, blueberry french toast | sourdough breakfast sandwiches | sourdough jack sandwich, bacon egg sourdough sandwich, steak egg sourdough sandwich |
-| 8 | Smoothie bowls | tropical smoothie bowl, berry smoothie bowl, green smoothie bowl, peanut butter smoothie bowl, chocolate smoothie bowl | sweet brunch options | banana bread, fruit salad, waffles with fruit, chocolate chip pancakes, coffee cake |
-| 9 | Breakfast smoothies | banana smoothie, berry smoothie, green smoothie, protein breakfast smoothie, yogurt parfait | savory hash brown plates | hash browns, loaded hash browns, vegetable hash brown plates, meat and hash brown plates |
-| 10 | — | — | southern breakfast plates | shrimp and grits, country ham and eggs, biscuits and gravy, chicken and waffles, catfish and eggs |
+
+| Rank | Prod Title                | Prod Food Types                                                                                                        | Retr Title                     | Retr Food Types                                                                                                    |
+| ---- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| 1    | Breakfast burritos        | ham egg cheese burrito, bacon egg cheese burrito, sausage egg cheese burrito, chorizo egg burrito, breakfast burrito   | sausage & egg muffins          | sausage muffins, egg & cheese muffins, breakfast ham muffins                                                       |
+| 1    | Gourmet sandwiches        | bacon egg sandwich, egg and cheese sandwich, sausage egg sandwich, breakfast sandwich, turkey bacon sandwich           | classic breakfast burritos     | hash brown scramble burrito, breakfast burrito, bacon breakfast burrito, sausage breakfast burrito, veggie burrito |
+| 2    | Hearty breakfast platters | breakfast platter, vegetable breakfast platter, meat breakfast platter, full breakfast, egg and meat platter           | bacon and egg wraps            | bacon egg wraps, breakfast sausage wraps, chicken and egg wraps                                                    |
+| 3    | Pancakes and waffles      | buttermilk pancakes, blueberry pancakes, waffles with syrup, banana pancakes, chocolate chip pancakes                  | eggs and bacon dishes          | eggs benedict, scrambled eggs with bacon, bacon and egg hash, breakfast egg platters, bacon sunrise bowls          |
+| 4    | French toast              | classic french toast, stuffed french toast, banana bread french toast, cinnamon roll french toast, churro french toast | fluffy waffles and pancakes    | buttermilk pancakes, Belgian waffles, banana pancakes, fruity waffles, chocolate chip pancakes                     |
+| 6    | Classic bagels            | plain bagel with cream cheese, everything bagel, smoked salmon bagel, egg and cheese bagel, bacon egg bagel            | savory wings                   | buffalo wings, spicy garlic wings, parmesan wings, honey sriracha wings, teriyaki wings                            |
+| 7    | French toast options      | classic french toast, stuffed french toast, cinnamon french toast, banana french toast, blueberry french toast         | sourdough breakfast sandwiches | sourdough jack sandwich, bacon egg sourdough sandwich, steak egg sourdough sandwich                                |
+| 8    | Smoothie bowls            | tropical smoothie bowl, berry smoothie bowl, green smoothie bowl, peanut butter smoothie bowl, chocolate smoothie bowl | sweet brunch options           | banana bread, fruit salad, waffles with fruit, chocolate chip pancakes, coffee cake                                |
+| 9    | Breakfast smoothies       | banana smoothie, berry smoothie, green smoothie, protein breakfast smoothie, yogurt parfait                            | savory hash brown plates       | hash browns, loaded hash browns, vegetable hash brown plates, meat and hash brown plates                           |
+| 10   | —                         | —                                                                                                                      | southern breakfast plates      | shrimp and grits, country ham and eggs, biscuits and gravy, chicken and waffles, catfish and eggs                  |
+
 
 ### All Metrics
 
-| Metric | Prod | Retrieved | Delta |
-|---|---|---|---|
-| mms | 0.2208 | 0.2175 | -0.0033 |
-| sr_at_3 | 0.0000 | 0.0000 | +0.0000 |
-| sr_at_5 | 0.0000 | 0.0000 | +0.0000 |
-| sr_at_10 | 0.0000 | 0.0000 | +0.0000 |
-| ccr | N/A | N/A | — |
-| ild | 0.5374 | 0.5290 | -0.0085 |
-| ohcd | 0.2222 | 0.1000 | -0.1222 |
-| tmc | 0.7046 | 0.7138 | +0.0092 |
-| fcs | 0.9048 | 0.7000 | -0.2048 |
-| composite_quality_score | 0.4253 | 0.3747 | -0.0507 **←** |
+
+| Metric                  | Prod   | Retrieved | Delta         |
+| ----------------------- | ------ | --------- | ------------- |
+| mms                     | 0.2208 | 0.2175    | -0.0033       |
+| sr_at_3                 | 0.0000 | 0.0000    | +0.0000       |
+| sr_at_5                 | 0.0000 | 0.0000    | +0.0000       |
+| sr_at_10                | 0.0000 | 0.0000    | +0.0000       |
+| ccr                     | N/A    | N/A       | —             |
+| ild                     | 0.5374 | 0.5290    | -0.0085       |
+| ohcd                    | 0.2222 | 0.1000    | -0.1222       |
+| tmc                     | 0.7046 | 0.7138    | +0.0092       |
+| fcs                     | 0.9048 | 0.7000    | -0.2048       |
+| composite_quality_score | 0.4253 | 0.3747    | -0.0507 **←** |
+
+
