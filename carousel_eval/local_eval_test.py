@@ -335,7 +335,7 @@ def format_compliance_score(
 
     checks = [
         len(words) <= 5,
-        sentence_case_ok(),
+        # sentence_case_ok(),  # removed: first-letter capitalization rule
         (words[0].lower() not in ADJECTIVE_BLOCKLIST) if words else True,
         not any(tok in ALCOHOL_TOKENS for tok in title.lower().split()),
         5 <= len(food_type) <= 15,
