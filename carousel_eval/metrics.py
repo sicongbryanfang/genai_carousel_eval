@@ -181,6 +181,83 @@ def intra_list_diversity(carousel_embs: np.ndarray) -> Optional[float]:
     return float(1.0 - sim[i, j].mean())
 
 
+# Default thresholds for new diversity metrics.
+DEFAULT_TCD_THRESHOLD = 0.65   # similarity above which two titles share a cluster
+DEFAULT_RR_THRESHOLD = 0.75    # similarity above which a pair is "redundant"
+
+
+def title_cluster_diversity(
+    carousel_embs: np.ndarray,
+    threshold: float = DEFAULT_TCD_THRESHOLD,
+) -> Optional[float]:
+    """
+    D1b – Fraction of distinct topic clusters among carousel titles.
+
+    Builds an undirected graph where an edge connects titles with cosine
+    similarity >= *threshold*, then counts connected components via BFS.
+
+    TCD = n_components / n_titles.  Returns 1.0 when every title is its own
+    cluster (maximally diverse), 1/K when all titles collapse into one cluster.
+
+    Parameters
+    ----------
+    carousel_embs : (K, D) unit-normalised embeddings.
+    threshold     : similarity above which two titles are "same cluster".
+    """
+    k = len(carousel_embs)
+    if k < 2:
+        return None
+    sim = carousel_embs @ carousel_embs.T
+    # Build adjacency list from upper triangle
+    adj: Dict[int, List[int]] = {i: [] for i in range(k)}
+    rows, cols = np.triu_indices(k, k=1)
+    for r, c in zip(rows, cols):
+        if sim[r, c] >= threshold:
+            adj[r].append(c)
+            adj[c].append(r)
+    # BFS to count connected components
+    visited = [False] * k
+    n_components = 0
+    for start in range(k):
+        if visited[start]:
+            continue
+        n_components += 1
+        queue = [start]
+        visited[start] = True
+        while queue:
+            node = queue.pop(0)
+            for nb in adj[node]:
+                if not visited[nb]:
+                    visited[nb] = True
+                    queue.append(nb)
+    return float(n_components / k)
+
+
+def redundancy_rate(
+    carousel_embs: np.ndarray,
+    threshold: float = DEFAULT_RR_THRESHOLD,
+) -> Optional[float]:
+    """
+    D1c – Fraction of title pairs that are near-duplicates.
+
+    RR = n_redundant_pairs / total_pairs, where a pair is "redundant" when
+    cosine similarity >= *threshold*.  Lower is better (0.0 = no redundancy).
+
+    Parameters
+    ----------
+    carousel_embs : (K, D) unit-normalised embeddings.
+    threshold     : similarity above which a pair is considered redundant.
+    """
+    k = len(carousel_embs)
+    if k < 2:
+        return None
+    sim = carousel_embs @ carousel_embs.T
+    i, j = np.triu_indices(k, k=1)
+    total_pairs = len(i)
+    n_redundant = int((sim[i, j] >= threshold).sum())
+    return float(n_redundant / total_pairs)
+
+
 # ---------------------------------------------------------------------------
 # R1/R2/D2 – Similarity-matrix-based metrics
 # Requires both item embeddings (ground truth) and carousel embeddings.
@@ -322,6 +399,12 @@ def compute_all_metrics(
 
         # D1: ILD
         results["ild"] = intra_list_diversity(c_embs)
+
+        # D1b: Title Cluster Diversity
+        results["tcd"] = title_cluster_diversity(c_embs)
+
+        # D1c: Redundancy Rate (lower = better)
+        results["redundancy_rate"] = redundancy_rate(c_embs)
 
         # Q1: TMC
         t_arrays = [_to_unit_array(e) for e, v in zip(title_embs_ord, valid_carousel_mask) if v]

@@ -285,6 +285,8 @@ CUISINE_TOP_LEVEL: Dict[str, str] = {
 }
 
 DEFAULT_THETA = 0.45
+DEFAULT_TCD_THRESHOLD = 0.65
+DEFAULT_RR_THRESHOLD = 0.75
 SR_K_VALUES = (3, 5, 10)
 
 COMPOSITE_WEIGHTS: Dict[str, float] = {
@@ -381,6 +383,53 @@ def intra_list_diversity(carousel_embs: np.ndarray) -> Optional[float]:
     return float(1.0 - sim[i, j].mean())
 
 
+def title_cluster_diversity(
+    carousel_embs: np.ndarray,
+    threshold: float = DEFAULT_TCD_THRESHOLD,
+) -> Optional[float]:
+    """D1b – Fraction of distinct topic clusters among carousel titles."""
+    k = len(carousel_embs)
+    if k < 2:
+        return None
+    sim = carousel_embs @ carousel_embs.T
+    adj: Dict[int, List[int]] = {i: [] for i in range(k)}
+    rows, cols = np.triu_indices(k, k=1)
+    for r, c in zip(rows, cols):
+        if sim[r, c] >= threshold:
+            adj[r].append(c)
+            adj[c].append(r)
+    visited = [False] * k
+    n_components = 0
+    for start in range(k):
+        if visited[start]:
+            continue
+        n_components += 1
+        queue = [start]
+        visited[start] = True
+        while queue:
+            node = queue.pop(0)
+            for nb in adj[node]:
+                if not visited[nb]:
+                    visited[nb] = True
+                    queue.append(nb)
+    return float(n_components / k)
+
+
+def redundancy_rate(
+    carousel_embs: np.ndarray,
+    threshold: float = DEFAULT_RR_THRESHOLD,
+) -> Optional[float]:
+    """D1c – Fraction of title pairs that are near-duplicates (lower is better)."""
+    k = len(carousel_embs)
+    if k < 2:
+        return None
+    sim = carousel_embs @ carousel_embs.T
+    i, j = np.triu_indices(k, k=1)
+    total_pairs = len(i)
+    n_redundant = int((sim[i, j] >= threshold).sum())
+    return float(n_redundant / total_pairs)
+
+
 def similarity_matrix(
     item_embs: np.ndarray, carousel_embs: np.ndarray
 ) -> np.ndarray:
@@ -465,6 +514,8 @@ def compute_all_metrics(
         c_embs = np.stack(valid_carousel_embs)
 
         results["ild"] = intra_list_diversity(c_embs)
+        results["tcd"] = title_cluster_diversity(c_embs)
+        results["redundancy_rate"] = redundancy_rate(c_embs)
 
         t_arrays = [
             _to_unit_array(e)
@@ -515,6 +566,8 @@ METRIC_COLS = [
     "sr_at_10",
     "ccr",
     "ild",
+    "tcd",
+    "redundancy_rate",
     "ohcd",
     "tmc",
     "fcs",

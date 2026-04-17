@@ -7,7 +7,7 @@ Every time a personalized food carousel set is generated for a consumer (e.g. "K
 1. **Are the carousels relevant to this person?** Do they reflect what the consumer has ordered before?
 2. **Are the carousels well-made?** Are they diverse, internally consistent, and formatted correctly?
 
-The system scores every generated carousel set on a scale of 0–1 across 7 metrics, grouped into three dimensions: **Relevance**, **Diversity**, and **Content Quality**.
+The system scores every generated carousel set on a scale of 0–1 across 9 metrics, grouped into three dimensions: **Relevance**, **Diversity**, and **Content Quality**.
 
 ---
 
@@ -19,7 +19,7 @@ Instead of exact word matching, the system measures *meaning* similarity. "Korea
 
 ---
 
-## The 7 Metrics
+## The 9 Metrics
 
 ### Relevance — Do the carousels match what this person orders?
 
@@ -97,6 +97,46 @@ Having nearly identical carousels (e.g., "Pepperoni pizza", "Cheese pizza", "Mar
 
 ---
 
+#### D1b · Title Cluster Diversity (TCD)
+> *"How many distinct topic clusters do the carousel titles form?"*
+
+ILD averages all pairwise similarities, which can mask a few near-duplicate pairs hidden among otherwise diverse titles. TCD takes a structural view: it builds a graph where titles are connected if their cosine similarity exceeds a threshold (`0.65`), then counts the number of connected components.
+
+TCD = n_components / n_titles.
+
+| Score | Interpretation |
+|---|---|
+| 1.0 | Every title is its own distinct cluster — maximally diverse |
+| 0.7 – 0.9 | Most titles are distinct; a few share a topic cluster |
+| < 0.5 | Titles are collapsing into very few topic groups |
+
+**Example**: Carousels ["Korean fried chicken", "Spicy Korean wings", "Sushi rolls", "Pad Thai", "Butter chicken"] — "Korean fried chicken" and "Spicy Korean wings" form one cluster, the rest are separate. TCD = 4/5 = 0.8.
+
+**Note**: Diagnostic metric — not included in the composite score. Higher is better.
+
+**Implementation**: `title_cluster_diversity(carousel_embs, threshold=0.65)` — BFS-based connected component counting on the similarity graph.
+
+---
+
+#### D1c · Redundancy Rate (RR)
+> *"What fraction of carousel pairs are near-duplicates?"*
+
+While ILD measures average diversity and TCD measures structural clustering, RR specifically targets the worst-case: pairs of titles so similar they are effectively duplicates. A carousel set can have good ILD (many pairs are diverse) but still contain 1–2 near-duplicate pairs that waste slots.
+
+RR = n_redundant_pairs / total_pairs, where a pair is "redundant" if cosine similarity ≥ `0.75`.
+
+| Score | Interpretation |
+|---|---|
+| 0.0 | No near-duplicate pairs — every title is sufficiently distinct |
+| 0.01 – 0.05 | 1–2 redundant pairs out of 45 (for 10 carousels) |
+| > 0.10 | Significant redundancy — multiple title pairs are near-duplicates |
+
+**Note**: Diagnostic metric — not included in the composite score. **Lower is better** (unlike all other metrics where higher = better).
+
+**Implementation**: `redundancy_rate(carousel_embs, threshold=0.75)` — counts pairs exceeding the similarity threshold in the upper triangle.
+
+---
+
 #### D2 · Order History Coverage Diversity (OHCD)
 > *"Are different carousels serving different parts of the consumer's tastes?"*
 
@@ -160,7 +200,7 @@ FCS checks whether 7 formatting rules were followed, using binary checks:
 
 ## Composite Score
 
-All 7 metrics are combined into a single **composite quality score** between 0 and 1:
+The 7 core metrics are combined into a single **composite quality score** between 0 and 1:
 
 | Metric | Weight | Rationale |
 |---|---|---|
@@ -171,6 +211,8 @@ All 7 metrics are combined into a single **composite quality score** between 0 a
 | OHCD (D2) | 10% | Grounded diversity against user taste breadth |
 | TMC (Q1) | 15% | Internal consistency — affects actual retrieval quality |
 | FCS (Q2) | 15% | Rule compliance — catches systematic generation failures |
+
+**TCD (D1b) and RR (D1c) are diagnostic metrics** — they are reported alongside the composite but are **not included in the composite weights**. They provide supplementary diversity signals that help identify specific failure modes (thematic clustering, near-duplicate pairs) that ILD's mean-based approach can miss.
 
 Missing metrics (e.g. when embeddings are absent) are excluded and remaining weights are renormalized so the composite stays in [0, 1]. Weights are configurable in `COMPOSITE_WEIGHTS` and can be tuned as data on downstream click-through and order rates is gathered.
 
@@ -188,6 +230,8 @@ MMS:    0.82   Ordered items are well-covered by carousels
 SR@5:   0.90   90% of items have a match in the top 5 carousels
 CCR:    1.00   All cuisine families represented
 ILD:    0.55   Healthy diversity across carousels
+TCD:    1.00   Every title is its own distinct cluster
+RR:     0.00   No near-duplicate pairs
 OHCD:   0.80   8 of 10 carousels serve distinct interests
 TMC:    0.88   Titles and food tags are aligned
 FCS:    0.96   Format rules mostly followed
@@ -203,6 +247,8 @@ MMS:    0.31   Carousels don't match what consumer orders
 SR@5:   0.20   Only 20% of items have a match
 CCR:    0.17   Only 1 of 6 cuisine families covered
 ILD:    0.22   Carousels are very similar to each other
+TCD:    0.30   Only 3 distinct clusters among 10 titles
+RR:     0.13   6 out of 45 pairs are near-duplicates
 OHCD:   0.20   Only 2 of 10 carousels serve distinct interests
 TMC:    0.61   Acceptable title-tag alignment
 FCS:    0.89   Format is fine
@@ -217,7 +263,9 @@ Composite: 0.35  → Investigate profile quality or prompt behavior
 | Problem | Detected by |
 |---|---|
 | Carousels for cuisines the consumer never orders | MMS, SR@K, CCR |
-| All carousels are slight variations of the same food (e.g., all Italian) | ILD, OHCD, CCR |
+| All carousels are slight variations of the same food (e.g., all Italian) | ILD, TCD, OHCD, CCR |
+| A few carousel titles are near-duplicates (e.g., "Chicken tacos" and "Chicken taco plates") | RR, TCD |
+| Titles orbit 2–3 themes but aren't exact duplicates (moderate ILD but low structural diversity) | TCD |
 | Title says "Late night snacks" but food tags are all breakfast items | TMC |
 | Generator ignores the 5-word title limit or uses filler adjectives | FCS |
 | Consumer has diverse tastes but all carousels cluster on one interest | OHCD |

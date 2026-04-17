@@ -1,8 +1,4 @@
 .claude/
 CLAUDE.md
 *.pkl
-carousel_eval/orders.csv
-carousel_eval/prod_carousels.csv
-carousel_eval/retrieved_carousel.csv
-carousel_eval/results_all_cx_title_only/eval_prod.csv
-carousel_eval/results_all_cx_title_only/eval_retrieved.csv
+*.csv
