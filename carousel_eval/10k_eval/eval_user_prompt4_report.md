@@ -196,6 +196,55 @@ All effect sizes are small or negligible (|d| < 0.5). With n=43k, statistical si
 - No-think has 3x more brand-specific titles (1.99% vs 0.64%), producing names that match order history items more closely via embedding similarity. This likely explains the higher MMS/SR@K scores despite no thinking tokens.
 
 
+## Brand-Name Title Analysis
+
+No_think produces 3.3x more brand-name titles (18,149 vs 5,445), but the increase is driven by **repetition of the same items across consumers**, not broader brand diversity. Distinct brand titles only grow 2.3x (854 vs 366).
+
+### Top brand-name titles
+
+| Title | prompt4 | no_think | ratio |
+| --- | --- | --- | --- |
+| Chicken mcnuggets / McNuggets | 756 | 2,875 | 3.8x |
+| Big mac burgers / Big Mac burgers | 778 | 1,351 | 1.7x |
+| Sausage egg mcgriddles | 275 | 1,120 | 4.1x |
+| Whopper burgers / meals | 433 | 1,226 | 2.8x |
+| Happy meal variants | 79 | 1,039 | 13.2x |
+| Sausage egg mcmuffins | 146 | 807 | 5.5x |
+| Big mac meals / Big Mac meals | 315 | 1,767 | 5.6x |
+
+### Brand keyword frequency
+
+| Brand keyword | prompt4 | no_think | ratio |
+| --- | --- | --- | --- |
+| big mac | 1,622 | 4,315 | 2.7x |
+| mcnugget | 837 | 3,526 | 4.2x |
+| whopper | 768 | 2,507 | 3.3x |
+| mcgriddle | 676 | 2,306 | 3.4x |
+| mcmuffin | 472 | 1,921 | 4.1x |
+| chipotle | 838 | 1,135 | 1.4x |
+| happy meal | 79 | 1,039 | 13.1x |
+| mcchicken | 49 | 509 | 10.4x |
+| chick-fil-a | 12 | 177 | 14.8x |
+| kfc | 15 | 163 | 10.9x |
+
+The no_think model heavily defaults to McDonald's and Burger King item names across many consumers. These brand-specific titles (e.g., "Chicken McNuggets") closely match exact item names in order history, inflating MMS/SR@K scores compared to prompt4's more generic titles (e.g., "Chicken nuggets") which are semantically similar but not as close an embedding match. This suggests the no_think relevance gains are partly an artifact of title specificity rather than better personalization.
+
+
+## Summary
+
+Disabling thinking tokens produces carousels that score higher on the composite metric (+0.0062), but the effect size is negligible (Cohen's d = -0.12). All 12 metric differences have small or negligible effect sizes (|d| < 0.5), meaning the two variants perform similarly in practice.
+
+**Where no_think wins (relevance):** It generates more specific, brand-level titles (3x more brand-specific, 61% more distinct titles overall) that match order history item names more closely in embedding space. This boosts MMS (d=-0.31, the largest effect) and SR@K metrics. However, this may reflect title-to-item-name similarity rather than genuinely better recommendations.
+
+**Where prompt4 wins (structure):** Thinking tokens help produce better-organized carousels — higher cuisine coverage (CCR), more diverse topic clusters (TCD), lower redundancy, and slightly better format compliance. These are small effects but consistent.
+
+**Where they're equal:** SR@3 shows no significant difference (p=0.12). FCS is virtually identical (diff=0.0002).
+
+**Completeness trade-off:** No-think loses 722 daypart groups and 7,607 carousels (25 fully empty groups), showing the model occasionally produces incomplete structured output without thinking tokens. Prompt4 generates exactly 10 carousels per group every time.
+
+**Bottom line:** The differences are statistically significant (n=43k makes this easy) but practically small. The choice between variants depends on whether you prioritize relevance-to-order-history (no_think) or structural quality and reliability (prompt4).
+
+
 ## Notes
 
 - TMC is excluded from the composite score because the carousel format lacks `food_type` tags; title-metadata coherence cannot be properly computed (~0.17 across all variants).
