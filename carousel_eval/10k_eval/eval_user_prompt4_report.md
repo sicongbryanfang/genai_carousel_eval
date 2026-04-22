@@ -149,7 +149,16 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 
 ## Statistical Significance: prompt4 vs no_think
 
-Wilcoxon signed-rank test (non-parametric paired test) with Holm-Bonferroni correction across 42,991 common (consumer, daypart) pairs.
+We compared 42,991 matched (consumer, daypart) pairs using a Wilcoxon signed-rank test to determine whether the differences between prompt4 and no_think are real or just noise.
+
+**How to read the table:**
+- **Mean Diff**: negative means no_think scores higher; positive means prompt4 scores higher.
+- **Cohen's d**: measures how big the difference actually is in practice (not just whether it's real). Think of it as "how many standard deviations apart are the two variants." A d of 0.12 means the gap is just 12% of one standard deviation — the variation across different consumers within the same variant is far larger than the difference between variants.
+  - |d| < 0.2 = **negligible** — difference exists but too small to matter in practice
+  - 0.2–0.5 = **small** — noticeable if you look for it, but minor
+  - 0.5–0.8 = **medium** — clearly meaningful
+  - \> 0.8 = **large** — obvious difference
+- **Adj. p**: probability the difference is due to random chance (after correcting for testing 12 metrics at once). Values < 0.05 mean the difference is real, not random.
 
 | Metric | Mean prompt4 | Mean no_think | Mean Diff | Cohen's d | Effect | Adj. p | Sig? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -166,15 +175,19 @@ Wilcoxon signed-rank test (non-parametric paired test) with Holm-Bonferroni corr
 | FCS | 0.8326 | 0.8325 | +0.0002 | +0.04 | negligible | <0.001 | Yes |
 | **Composite** | **0.5439** | **0.5500** | **-0.0062** | **-0.12** | **negligible** | **<0.001** | **Yes** |
 
-Positive diff = prompt4 higher. Negative = no_think higher. For Redundancy Rate, lower is better.
+### What this means
 
-**no_think significantly better:** MMS (d=-0.31, small), ILD (d=-0.28, small), SR@10, SR@5, OHCD, Composite
+Almost all differences are **statistically real** (p < 0.001) — but with 43k data points, even tiny differences show up as "significant." The more important question is: **are the differences big enough to matter?**
 
-**prompt4 significantly better:** TMC (d=+0.27, small), TCD, CCR, Redundancy Rate, FCS
+**The answer is: not really.** Every metric has a small or negligible effect size (|d| < 0.5). The largest effect is MMS at d=-0.31 (small) — even that would be hard to notice in practice.
 
-**No significant difference:** SR@3
+**no_think edges ahead on relevance:** MMS (small effect), ILD (small effect), SR@10, SR@5, OHCD, and the Composite — but all with negligible-to-small effect sizes.
 
-All effect sizes are small or negligible (|d| < 0.5). With n=43k, statistical significance is easily achieved — practical significance (Cohen's d) matters more here.
+**prompt4 edges ahead on structure:** TMC (small effect), TCD, CCR, Redundancy Rate, FCS — again all negligible-to-small.
+
+**No difference at all:** SR@3 (p=0.12, not even statistically significant).
+
+**In plain terms:** If you picked a random consumer and looked at their carousels from both variants side by side, you'd have a very hard time telling which one came from which prompt. The two variants perform essentially the same.
 
 
 ## Data Volume Comparison (prompt4 vs no_think_no_rationale)
@@ -232,17 +245,15 @@ The no_think model heavily defaults to McDonald's and Burger King item names acr
 
 ## Summary
 
-Disabling thinking tokens produces carousels that score higher on the composite metric (+0.0062), but the effect size is negligible (Cohen's d = -0.12). All 12 metric differences have small or negligible effect sizes (|d| < 0.5), meaning the two variants perform similarly in practice.
+**The two variants produce nearly identical quality carousels.** The composite score differs by just 0.009 — for context, the spread across consumers within a single variant is ~0.095, so the between-variant gap is about 10x smaller than normal consumer-to-consumer variation. You would not be able to tell the carousels apart by looking at them.
 
-**Where no_think wins (relevance):** It generates more specific, brand-level titles (3x more brand-specific, 61% more distinct titles overall) that match order history item names more closely in embedding space. This boosts MMS (d=-0.31, the largest effect) and SR@K metrics. However, this may reflect title-to-item-name similarity rather than genuinely better recommendations.
+**No_think scores slightly higher on relevance metrics** (MMS, SR@K, OHCD), but this is largely explained by the brand-name repetition pattern: it defaults to specific item names like "Chicken McNuggets" and "Big Mac meals" 3-13x more often than prompt4. These titles match order history item names almost exactly in embedding space, boosting similarity scores. Prompt4 uses more generic titles like "Chicken nuggets" that mean the same thing but score slightly lower. This is a measurement artifact, not a genuine recommendation quality difference.
 
-**Where prompt4 wins (structure):** Thinking tokens help produce better-organized carousels — higher cuisine coverage (CCR), more diverse topic clusters (TCD), lower redundancy, and slightly better format compliance. These are small effects but consistent.
+**Prompt4 scores slightly higher on structure and diversity** (CCR, TCD, Redundancy Rate). With thinking tokens, the model produces better-organized carousels with broader cuisine coverage and fewer near-duplicate titles. These effects are also small.
 
-**Where they're equal:** SR@3 shows no significant difference (p=0.12). FCS is virtually identical (diff=0.0002).
+**Prompt4 is more reliable.** It generates exactly 10 carousels per daypart group every time. No_think fails to produce complete output in some cases — 722 missing daypart groups, 7,607 missing carousels, and 25 completely empty groups.
 
-**Completeness trade-off:** No-think loses 722 daypart groups and 7,607 carousels (25 fully empty groups), showing the model occasionally produces incomplete structured output without thinking tokens. Prompt4 generates exactly 10 carousels per group every time.
-
-**Bottom line:** The differences are statistically significant (n=43k makes this easy) but practically small. The choice between variants depends on whether you prioritize relevance-to-order-history (no_think) or structural quality and reliability (prompt4).
+**Bottom line:** The quality difference between the two variants is negligible. Prompt4 is the safer choice because it produces complete, well-structured output every time, and its slightly lower relevance scores are likely an artifact of using generic food names instead of repeating brand-specific item names.
 
 
 ## Notes
