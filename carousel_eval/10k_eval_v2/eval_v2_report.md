@@ -86,7 +86,7 @@ Wilcoxon signed-rank test (two-sided, non-parametric paired test) on 28,326 comm
 - **V2 significantly better**: ILD, TCD, Redundancy Rate, TMC
 - **P4 significantly better**: MMS, SR@3, SR@5, SR@10, FCS, OHCD, Composite
 - **No significant difference**: CCR
-- **Important**: With the updated composite weights (TMC excluded), the composite gap has flipped — P4 now scores slightly higher than V2 (d=-0.06, negligible). The old composite included TMC (15% weight) where V2 had an edge, inflating V2's composite. With TMC removed, P4's advantages on relevance metrics (MMS, SR@K, OHCD) outweigh V2's diversity advantages (ILD, TCD). Individual metric differences remain negligible (|d| < 0.13) except for TMC and FCS which are format-related, not order-dependent.
+- With n~28k, even tiny differences reach statistical significance. All composite-relevant effect sizes are negligible (|d| < 0.13) except for TMC and FCS which are format-related, not order-dependent. P4's advantages on relevance metrics (MMS, SR@K, OHCD) slightly outweigh V2's diversity advantages (ILD, TCD) in the composite.
 
 ## Order Distribution by Consumer (Common Consumers)
 
@@ -153,4 +153,3 @@ Order distributions are well-matched across the two windows. P4 has ~2% more ord
 - TMC is excluded from the composite score (low signal due to missing `food_type` tags).
 - TCD and Redundancy Rate are diagnostic metrics not included in the composite score.
 - Order history windows differ: V2 uses 2025-12-22 to 2026-03-21; P4/P1 use 2026-01-17 to 2026-04-16.
-- With the updated composite weights (TMC excluded), P4/P1 now score slightly higher than V2 on composite. The old weights gave V2 a composite advantage because TMC (15% weight) favored V2; removing TMC and redistributing weight to relevance metrics (MMS, SR@5, OHCD) tips the composite in P4's favor.
