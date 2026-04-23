@@ -1,13 +1,13 @@
 """
-Fetch 90-day order history from Snowflake for consumers in the 10k eval CSV.
+Fetch 90-day order history from Snowflake for V2 eval consumers.
 
 Uses browser-based SSO for authentication.
 
 Usage:
-    python carousel_eval/10k_eval/fetch_orders.py \
-        --input carousel_eval/10k_eval/10k_user_promp4.csv \
-        --output carousel_eval/10k_eval/10k_orders.csv \
-        --eval_date 2026-04-16
+    python carousel_eval/10k_eval_v2/fetch_orders.py \
+        --input carousel_eval/10k_eval_v2/10k_v2_carousels.csv \
+        --output carousel_eval/10k_eval_v2/10k_v2_orders.csv \
+        --eval_date 2026-03-21
 """
 
 from __future__ import annotations
@@ -112,8 +112,8 @@ def fetch_orders(conn, consumer_ids: list[int], eval_date: str, batch_size: int 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--input", required=True, help="10k eval CSV with CONSUMER_ID column")
-    p.add_argument("--output", default="carousel_eval/10k_eval/10k_orders.csv")
+    p.add_argument("--input", required=True, help="V2 carousel CSV with CONSUMER_ID column")
+    p.add_argument("--output", default="carousel_eval/10k_eval_v2/10k_v2_orders.csv")
     p.add_argument("--eval_date", default=datetime.now().strftime("%Y-%m-%d"),
                    help="End date for order history window (default: today)")
     p.add_argument("--user", default=None, help="Snowflake username")
