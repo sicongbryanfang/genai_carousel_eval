@@ -23,7 +23,7 @@
 | OHCD (order history coverage diversity) | 0.4353     | 0.4397     | 0.4375     | -0.0043     |
 | TMC (title-metadata coherence)          | 0.1729     | 0.1663     | 0.1692     | +0.0066     |
 | FCS (format compliance)                 | 0.8308     | 0.8326     | 0.8314     | -0.0019     |
-| **Composite Quality Score**             | **0.5717** | **0.5431** | **0.5424** | **+0.0285** |
+| **Composite Quality Score**             | **0.5717** | **0.5764** | **0.5751** | **-0.0047** |
 | Consumers                               | 6,534      | 6,534      | 6,534      |             |
 | (consumer, daypart) groups              | 30,818     | 30,637     | 30,637     |             |
 
@@ -64,7 +64,7 @@
 
 ## Statistical Significance (V2 vs Prompt 4)
 
-Wilcoxon signed-rank test (two-sided, non-parametric paired test) on 28,278 common (consumer, daypart) pairs. Holm-Bonferroni corrected for 12 metrics.
+Wilcoxon signed-rank test (two-sided, non-parametric paired test) on 28,326 common (consumer, daypart) pairs. Holm-Bonferroni corrected for 12 metrics.
 
 
 | Metric          | V2         | P4         | Diff        | Cohen's d   | Effect         | Adj. p       | Sig?    |
@@ -80,13 +80,13 @@ Wilcoxon signed-rank test (two-sided, non-parametric paired test) on 28,278 comm
 | OHCD            | 0.4542     | 0.4574     | -0.0033     | -0.0211     | negligible     | 3.12e-04     | Yes     |
 | TMC             | 0.1728     | 0.1663     | +0.0066     | +0.3339     | small          | 0.00e+00     | Yes     |
 | FCS             | 0.8307     | 0.8326     | -0.0019     | -0.2607     | small          | 0.00e+00     | Yes     |
-| **Composite**   | **0.5740** | **0.5434** | **+0.0306** | **+0.4342** | **small**      | **0.00e+00** | **Yes** |
+| **Composite**   | **0.5739** | **0.5781** | **-0.0041** | **-0.0569** | **negligible** | **1.37e-17** | **Yes** |
 
 
-- **V2 significantly better**: ILD, TCD, Redundancy Rate, TMC, Composite
-- **P4 significantly better**: MMS, SR@3, SR@5, SR@10, FCS, OHCD
+- **V2 significantly better**: ILD, TCD, Redundancy Rate, TMC
+- **P4 significantly better**: MMS, SR@3, SR@5, SR@10, FCS, OHCD, Composite
 - **No significant difference**: CCR
-- **Important**: The composite score gap (d=+0.43, small effect) is largely driven by the different order history windows — V2 uses orders ending 3/21 that are closer to when its carousels were generated, while P4 uses orders ending 4/16 that are 2.5 months newer than the context used to generate P4 carousels. Individual metric differences remain negligible (|d| < 0.13) except for TMC and FCS which are format-related, not order-dependent.
+- **Important**: With the updated composite weights (TMC excluded), the composite gap has flipped — P4 now scores slightly higher than V2 (d=-0.06, negligible). The old composite included TMC (15% weight) where V2 had an edge, inflating V2's composite. With TMC removed, P4's advantages on relevance metrics (MMS, SR@K, OHCD) outweigh V2's diversity advantages (ILD, TCD). Individual metric differences remain negligible (|d| < 0.13) except for TMC and FCS which are format-related, not order-dependent.
 
 ## Order Distribution by Consumer (Common Consumers)
 
@@ -153,4 +153,4 @@ Order distributions are well-matched across the two windows. P4 has ~2% more ord
 - TMC is excluded from the composite score (low signal due to missing `food_type` tags).
 - TCD and Redundancy Rate are diagnostic metrics not included in the composite score.
 - Order history windows differ: V2 uses 2025-12-22 to 2026-03-21; P4/P1 use 2026-01-17 to 2026-04-16.
-- The composite score gap between V2 and P4/P1 widened compared to the previous eval (with P4/P1 orders ending 2/03) because P4/P1 carousels were generated based on older context but are now evaluated against more recent orders. V2's orders (ending 3/21) remain closer to when its carousels were generated, giving it a natural advantage in order-dependent metrics like OHCD.
+- With the updated composite weights (TMC excluded), P4/P1 now score slightly higher than V2 on composite. The old weights gave V2 a composite advantage because TMC (15% weight) favored V2; removing TMC and redistributing weight to relevance metrics (MMS, SR@5, OHCD) tips the composite in P4's favor.

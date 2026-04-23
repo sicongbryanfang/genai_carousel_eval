@@ -28,7 +28,7 @@ When a metric is missing (e.g. CCR with no cuisine data), weights are renormaliz
 
 | Metric                         | prompt1    | prompt4    | prompt4_no_think | delta (p4 - p1) | delta (no_think - p4) |
 | ------------------------------ | ---------- | ---------- | ---------------- | --------------- | --------------------- |
-| **Composite Quality Score**    | **0.5425** | **0.5437** | **0.5499**       | **+0.0012**     | **+0.0062**           |
+| **Composite Quality Score**    | **0.5750** | **0.5767** | **0.5858**       | **+0.0018**     | **+0.0091**           |
 | MMS (mean max similarity)      | 0.4962     | 0.5013     | 0.5260           | +0.0051         | +0.0247               |
 | SR@3                           | 0.3716     | 0.3794     | 0.3816           | +0.0078         | +0.0022               |
 | SR@5                           | 0.4623     | 0.4712     | 0.4840           | +0.0089         | +0.0128               |
@@ -61,7 +61,7 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 | OHCD (order history coverage diversity) | 0.4442     | 0.2664     | 42,963     |
 | TMC (title-metadata coherence)          | 0.1607     | 0.0220     | 42,963     |
 | FCS (format compliance)                 | 0.8324     | 0.0040     | 42,963     |
-| **Composite Quality Score**             | **0.5499** | **0.0793** | **42,963** |
+| **Composite Quality Score**             | **0.5858** | **0.0954** | **42,963** |
 
 
 ### Breakdown by Daypart
@@ -69,14 +69,14 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 
 | Daypart            | Count | MMS    | SR@5   | CCR    | ILD    | Composite |
 | ------------------ | ----- | ------ | ------ | ------ | ------ | --------- |
-| weekday_breakfast  | 4,564 | 0.5356 | 0.5222 | 0.8765 | 0.6431 | 0.5676    |
-| weekday_dinner     | 7,601 | 0.5188 | 0.4608 | 0.6816 | 0.6669 | 0.5438    |
-| weekday_late_night | 4,830 | 0.5315 | 0.4945 | 0.7743 | 0.6679 | 0.5525    |
-| weekday_lunch      | 7,036 | 0.5167 | 0.4670 | 0.7350 | 0.6520 | 0.5472    |
-| weekend_breakfast  | 3,673 | 0.5447 | 0.5438 | 0.8925 | 0.6434 | 0.5709    |
-| weekend_dinner     | 6,084 | 0.5236 | 0.4650 | 0.7065 | 0.6733 | 0.5377    |
-| weekend_late_night | 3,446 | 0.5375 | 0.5061 | 0.7998 | 0.6711 | 0.5519    |
-| weekend_lunch      | 5,729 | 0.5181 | 0.4653 | 0.7595 | 0.6619 | 0.5431    |
+| weekday_breakfast  | 4,564 | 0.5356 | 0.5222 | 0.8765 | 0.6431 | 0.6043    |
+| weekday_dinner     | 7,601 | 0.5188 | 0.4608 | 0.6816 | 0.6669 | 0.5877    |
+| weekday_late_night | 4,830 | 0.5315 | 0.4945 | 0.7743 | 0.6679 | 0.5848    |
+| weekday_lunch      | 7,036 | 0.5167 | 0.4670 | 0.7350 | 0.6520 | 0.5897    |
+| weekend_breakfast  | 3,673 | 0.5447 | 0.5438 | 0.8925 | 0.6434 | 0.6030    |
+| weekend_dinner     | 6,084 | 0.5236 | 0.4650 | 0.7065 | 0.6733 | 0.5700    |
+| weekend_late_night | 3,446 | 0.5375 | 0.5061 | 0.7998 | 0.6711 | 0.5768    |
+| weekend_lunch      | 5,729 | 0.5181 | 0.4653 | 0.7595 | 0.6619 | 0.5760    |
 
 
 ## user_prompt4 — Overall Metrics
@@ -95,7 +95,7 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 | OHCD (order history coverage diversity) | 0.4373     | 0.2638     | 43,403     |
 | TMC (title-metadata coherence)          | 0.1665     | 0.0205     | 43,403     |
 | FCS (format compliance)                 | 0.8326     | 0.0035     | 43,403     |
-| **Composite Quality Score**             | **0.5437** | **0.0778** | **43,403** |
+| **Composite Quality Score**             | **0.5767** | **0.0945** | **43,403** |
 
 
 ### Breakdown by Daypart
@@ -103,14 +103,14 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 
 | Daypart            | Count | MMS    | SR@5   | CCR    | ILD    | Composite |
 | ------------------ | ----- | ------ | ------ | ------ | ------ | --------- |
-| weekday_breakfast  | 4,606 | 0.4964 | 0.4786 | 0.8894 | 0.6157 | 0.5523    |
-| weekday_dinner     | 7,675 | 0.5017 | 0.4566 | 0.6983 | 0.6537 | 0.5411    |
-| weekday_late_night | 4,876 | 0.5095 | 0.4887 | 0.7859 | 0.6542 | 0.5481    |
-| weekday_lunch      | 7,108 | 0.4945 | 0.4581 | 0.7523 | 0.6407 | 0.5432    |
-| weekend_breakfast  | 3,710 | 0.5071 | 0.5064 | 0.8995 | 0.6269 | 0.5571    |
-| weekend_dinner     | 6,149 | 0.5030 | 0.4606 | 0.7196 | 0.6619 | 0.5337    |
-| weekend_late_night | 3,487 | 0.5125 | 0.5001 | 0.8092 | 0.6600 | 0.5462    |
-| weekend_lunch      | 5,792 | 0.4937 | 0.4573 | 0.7698 | 0.6526 | 0.5376    |
+| weekday_breakfast  | 4,606 | 0.4964 | 0.4786 | 0.8894 | 0.6157 | 0.5844    |
+| weekday_dinner     | 7,675 | 0.5017 | 0.4566 | 0.6983 | 0.6537 | 0.5827    |
+| weekday_late_night | 4,876 | 0.5095 | 0.4887 | 0.7859 | 0.6542 | 0.5779    |
+| weekday_lunch      | 7,108 | 0.4945 | 0.4581 | 0.7523 | 0.6407 | 0.5825    |
+| weekend_breakfast  | 3,710 | 0.5071 | 0.5064 | 0.8995 | 0.6269 | 0.5852    |
+| weekend_dinner     | 6,149 | 0.5030 | 0.4606 | 0.7196 | 0.6619 | 0.5637    |
+| weekend_late_night | 3,487 | 0.5125 | 0.5001 | 0.8092 | 0.6600 | 0.5687    |
+| weekend_lunch      | 5,792 | 0.4937 | 0.4573 | 0.7698 | 0.6526 | 0.5679    |
 
 
 ## user_prompt1 — Overall Metrics
@@ -129,7 +129,7 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 | OHCD (order history coverage diversity) | 0.4353     | 0.2626     | 43,331     |
 | TMC (title-metadata coherence)          | 0.1694     | 0.0199     | 43,331     |
 | FCS (format compliance)                 | 0.8314     | 0.0061     | 43,331     |
-| **Composite Quality Score**             | **0.5425** | **0.0777** | **43,331** |
+| **Composite Quality Score**             | **0.5750** | **0.0944** | **43,331** |
 
 
 ### Breakdown by Daypart
@@ -137,14 +137,14 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 
 | Daypart            | Count | MMS    | SR@5   | CCR    | ILD    | Composite |
 | ------------------ | ----- | ------ | ------ | ------ | ------ | --------- |
-| weekday_breakfast  | 4,600 | 0.4913 | 0.4754 | 0.8920 | 0.6253 | 0.5523    |
-| weekday_dinner     | 7,660 | 0.4980 | 0.4472 | 0.7009 | 0.6613 | 0.5401    |
-| weekday_late_night | 4,867 | 0.5018 | 0.4800 | 0.7851 | 0.6572 | 0.5455    |
-| weekday_lunch      | 7,097 | 0.4908 | 0.4476 | 0.7555 | 0.6509 | 0.5425    |
-| weekend_breakfast  | 3,705 | 0.4998 | 0.4984 | 0.8991 | 0.6373 | 0.5553    |
-| weekend_dinner     | 6,134 | 0.4989 | 0.4518 | 0.7211 | 0.6721 | 0.5327    |
-| weekend_late_night | 3,483 | 0.5041 | 0.4875 | 0.8118 | 0.6630 | 0.5436    |
-| weekend_lunch      | 5,785 | 0.4899 | 0.4482 | 0.7737 | 0.6620 | 0.5370    |
+| weekday_breakfast  | 4,600 | 0.4913 | 0.4754 | 0.8920 | 0.6253 | 0.5840    |
+| weekday_dinner     | 7,660 | 0.4980 | 0.4472 | 0.7009 | 0.6613 | 0.5810    |
+| weekday_late_night | 4,867 | 0.5018 | 0.4800 | 0.7851 | 0.6572 | 0.5744    |
+| weekday_lunch      | 7,097 | 0.4908 | 0.4476 | 0.7555 | 0.6509 | 0.5812    |
+| weekend_breakfast  | 3,705 | 0.4998 | 0.4984 | 0.8991 | 0.6373 | 0.5828    |
+| weekend_dinner     | 6,134 | 0.4989 | 0.4518 | 0.7211 | 0.6721 | 0.5624    |
+| weekend_late_night | 3,483 | 0.5041 | 0.4875 | 0.8118 | 0.6630 | 0.5652    |
+| weekend_lunch      | 5,785 | 0.4899 | 0.4482 | 0.7737 | 0.6620 | 0.5668    |
 
 
 ## Statistical Significance: prompt4 vs no_think
@@ -173,7 +173,7 @@ We compared 42,949 matched (consumer, daypart) pairs using a Wilcoxon signed-ran
 | OHCD | 0.4373 | 0.4442 | -0.0069 | -0.08 | negligible | <0.001 | Yes |
 | TMC | 0.1665 | 0.1607 | +0.0058 | +0.27 | small | <0.001 | Yes |
 | FCS | 0.8326 | 0.8324 | +0.0002 | +0.05 | negligible | <0.001 | Yes |
-| **Composite** | **0.5437** | **0.5499** | **-0.0061** | **-0.12** | **negligible** | **<0.001** | **Yes** |
+| **Composite** | **0.5768** | **0.5858** | **-0.0090** | **-0.14** | **negligible** | **<0.001** | **Yes** |
 
 ### What this means
 
@@ -245,7 +245,7 @@ The no_think model heavily defaults to McDonald's and Burger King item names acr
 
 ## Summary
 
-**The two variants produce nearly identical quality carousels.** The composite score differs by just 0.006 — for context, the spread across consumers within a single variant is ~0.079, so the between-variant gap is about 13x smaller than normal consumer-to-consumer variation. You would not be able to tell the carousels apart by looking at them.
+**The two variants produce nearly identical quality carousels.** The composite score differs by just 0.009 — for context, the spread across consumers within a single variant is ~0.095, so the between-variant gap is about 10x smaller than normal consumer-to-consumer variation. You would not be able to tell the carousels apart by looking at them.
 
 **No_think scores slightly higher on relevance metrics** (MMS, SR@K, OHCD), but this is largely explained by the brand-name repetition pattern: it defaults to specific item names like "Chicken McNuggets" and "Big Mac meals" 3-13x more often than prompt4. These titles match order history item names almost exactly in embedding space, boosting similarity scores. Prompt4 uses more generic titles like "Chicken nuggets" that mean the same thing but score slightly lower. This is a measurement artifact, not a genuine recommendation quality difference.
 

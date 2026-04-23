@@ -289,14 +289,16 @@ DEFAULT_TCD_THRESHOLD = 0.65
 DEFAULT_RR_THRESHOLD = 0.75
 SR_K_VALUES = (3, 5, 10)
 
+# Composite weights — sum to 1.0.
+# TMC excluded: carousel format lacks food_type tags, making TMC unreliable (~0.17).
+# TCD and Redundancy Rate are diagnostic only (not included).
 COMPOSITE_WEIGHTS: Dict[str, float] = {
     "mms": 0.20,
-    "sr_at_5": 0.15,
+    "sr_at_5": 0.20,
     "ccr": 0.15,
-    "ild": 0.10,
-    "ohcd": 0.10,
-    "tmc": 0.15,
-    "fcs": 0.15,
+    "ild": 0.15,
+    "ohcd": 0.20,
+    "fcs": 0.10,
 }
 
 
