@@ -5,7 +5,7 @@
 
 ## Composite Score Formula
 
-TMC is excluded from the composite because the carousel format lacks `food_type` tags, making title-metadata coherence unreliable. TCD and Redundancy Rate are diagnostic only.
+TCD and Redundancy Rate are diagnostic only.
 
 ```
 Composite = 0.20 * MMS + 0.20 * SR@5 + 0.20 * OHCD + 0.15 * CCR + 0.15 * ILD + 0.10 * FCS
@@ -25,23 +25,117 @@ When a metric is missing (e.g. CCR with no cuisine data), weights are renormaliz
 
 ## Prompt Comparison
 
+Five variants are compared. The two `_think_1024` variants are runs of the prompt4 family with the LLM's thinking budget capped at 1024 tokens.
 
-| Metric                         | prompt1    | prompt4    | prompt4_no_think | delta (p4 - p1) | delta (no_think - p4) |
-| ------------------------------ | ---------- | ---------- | ---------------- | --------------- | --------------------- |
-| **Composite Quality Score**    | **0.5750** | **0.5767** | **0.5858**       | **+0.0018**     | **+0.0091**           |
-| MMS (mean max similarity)      | 0.4962     | 0.5013     | 0.5260           | +0.0051         | +0.0247               |
-| SR@3                           | 0.3716     | 0.3794     | 0.3816           | +0.0078         | +0.0022               |
-| SR@5                           | 0.4623     | 0.4712     | 0.4840           | +0.0089         | +0.0128               |
-| SR@10                          | 0.5679     | 0.5795     | 0.6108           | +0.0116         | +0.0313               |
-| CCR (cuisine coverage recall)  | 0.7778     | 0.7757     | 0.7627           | -0.0021         | -0.0130               |
-| ILD (intra-list diversity)     | 0.6550     | 0.6468     | 0.6606           | -0.0082         | +0.0138               |
-| TCD (title cluster diversity)  | 0.8949     | 0.8781     | 0.8621           | -0.0168         | -0.0160               |
-| Redundancy Rate                | 0.0066     | 0.0088     | 0.0132           | +0.0022         | +0.0044               |
-| OHCD                           | 0.4353     | 0.4373     | 0.4442           | +0.0020         | +0.0069               |
-| TMC (title-metadata coherence) | 0.1694     | 0.1665     | 0.1607           | -0.0029         | -0.0058               |
-| FCS (format compliance)        | 0.8314     | 0.8326     | 0.8324           | +0.0012         | -0.0002               |
-| Consumers evaluated            | 9,444      | 9,461      | 9,372            |                 |                       |
-| (consumer, daypart) groups     | 43,331     | 43,403     | 42,963           |                 |                       |
+| Metric                         | prompt1    | prompt4    | prompt4_no_think | prompt4_think_1024 | prompt4_no_rat_think_1024 |
+| ------------------------------ | ---------- | ---------- | ---------------- | ------------------ | ------------------------- |
+| **Composite Quality Score**    | **0.5750** | **0.5767** | **0.5858**       | **0.5804**         | **0.5816**                |
+| MMS (mean max similarity)      | 0.4962     | 0.5013     | 0.5260           | 0.5138             | 0.5165                    |
+| SR@3                           | 0.3716     | 0.3794     | 0.3816           | 0.3782             | 0.3791                    |
+| SR@5                           | 0.4623     | 0.4712     | 0.4840           | 0.4762             | 0.4794                    |
+| SR@10                          | 0.5679     | 0.5795     | 0.6108           | 0.5935             | 0.6007                    |
+| CCR (cuisine coverage recall)  | 0.7778     | 0.7757     | 0.7627           | 0.7683             | 0.7660                    |
+| ILD (intra-list diversity)     | 0.6550     | 0.6468     | 0.6606           | 0.6516             | 0.6512                    |
+| TCD (title cluster diversity)  | 0.8949     | 0.8781     | 0.8621           | 0.8616             | 0.8545                    |
+| Redundancy Rate                | 0.0066     | 0.0088     | 0.0132           | 0.0125             | 0.0135                    |
+| OHCD                           | 0.4353     | 0.4373     | 0.4442           | 0.4400             | 0.4417                    |
+| FCS (format compliance)        | 0.8314     | 0.8326     | 0.8324           | 0.8325             | 0.8326                    |
+| Consumers evaluated            | 9,444      | 9,461      | 9,372            | 9,407              | 9,312                     |
+| (consumer, daypart) groups     | 43,331     | 43,403     | 42,963           | 43,145             | 42,728                    |
+
+### Effect of capping the thinking budget at 1024 tokens (vs prompt4 default)
+
+| Metric    | prompt4    | prompt4_think_1024 | delta (think_1024 - p4) |
+| --------- | ---------- | ------------------ | ----------------------- |
+| Composite | **0.5767** | **0.5804**         | **+0.0037**             |
+| MMS       | 0.5013     | 0.5138             | +0.0125                 |
+| SR@5      | 0.4712     | 0.4762             | +0.0050                 |
+| SR@10     | 0.5795     | 0.5935             | +0.0140                 |
+| CCR       | 0.7757     | 0.7683             | -0.0074                 |
+| ILD       | 0.6468     | 0.6516             | +0.0048                 |
+| TCD       | 0.8781     | 0.8616             | -0.0165                 |
+| OHCD      | 0.4373     | 0.4400             | +0.0027                 |
+
+### Effect of adding thinking back at 1024 (no_think_no_rationale vs no_rationale_think_1024)
+
+| Metric    | prompt4_no_think | prompt4_no_rat_think_1024 | delta                    |
+| --------- | ---------------- | ------------------------- | ------------------------ |
+| Composite | **0.5858**       | **0.5816**                | **-0.0042**              |
+| MMS       | 0.5260           | 0.5165                    | -0.0095                  |
+| SR@5      | 0.4840           | 0.4794                    | -0.0046                  |
+| SR@10     | 0.6108           | 0.6007                    | -0.0101                  |
+| CCR       | 0.7627           | 0.7660                    | +0.0033                  |
+| ILD       | 0.6606           | 0.6512                    | -0.0094                  |
+| TCD       | 0.8621           | 0.8545                    | -0.0076                  |
+| OHCD      | 0.4442           | 0.4417                    | -0.0025                  |
+
+
+## prompt4_think_1024 — Overall Metrics
+
+Prompt4 with the LLM thinking budget capped at 1024 tokens (rationale field still produced).
+
+| Metric                                  | Mean       | Std        | n          |
+| --------------------------------------- | ---------- | ---------- | ---------- |
+| MMS (mean max similarity)               | 0.5138     | 0.1138     | 43,145     |
+| SR@3                                    | 0.3782     | 0.2988     | 43,145     |
+| SR@5                                    | 0.4762     | 0.2996     | 43,145     |
+| SR@10                                   | 0.5935     | 0.2839     | 43,145     |
+| CCR (cuisine coverage recall)           | 0.7683     | 0.3154     | 41,561     |
+| ILD (intra-list diversity)              | 0.6516     | 0.0533     | 43,145     |
+| TCD (title cluster diversity)           | 0.8616     | 0.1312     | 43,145     |
+| Redundancy Rate                         | 0.0125     | 0.0203     | 43,145     |
+| OHCD (order history coverage diversity) | 0.4400     | 0.2647     | 43,145     |
+| FCS (format compliance)                 | 0.8325     | 0.0038     | 43,145     |
+| **Composite Quality Score**             | **0.5804** | **0.0941** | **43,145** |
+
+
+### Breakdown by Daypart
+
+
+| Daypart            | Count | MMS    | SR@5   | CCR    | ILD    | Composite |
+| ------------------ | ----- | ------ | ------ | ------ | ------ | --------- |
+| weekday_breakfast  | 4,581 | 0.5069 | 0.4822 | 0.8829 | 0.6279 | 0.5873    |
+| weekday_dinner     | 7,627 | 0.5114 | 0.4583 | 0.6868 | 0.6606 | 0.5848    |
+| weekday_late_night | 4,853 | 0.5237 | 0.4943 | 0.7791 | 0.6605 | 0.5826    |
+| weekday_lunch      | 7,064 | 0.5054 | 0.4620 | 0.7431 | 0.6430 | 0.5856    |
+| weekend_breakfast  | 3,689 | 0.5236 | 0.5177 | 0.8962 | 0.6313 | 0.5914    |
+| weekend_dinner     | 6,110 | 0.5144 | 0.4648 | 0.7109 | 0.6657 | 0.5667    |
+| weekend_late_night | 3,467 | 0.5298 | 0.5120 | 0.8051 | 0.6637 | 0.5753    |
+| weekend_lunch      | 5,754 | 0.5078 | 0.4614 | 0.7654 | 0.6526 | 0.5717    |
+
+
+## prompt4_no_rationale_think_1024 — Overall Metrics
+
+Prompt4 with no rationale field in the output and the LLM thinking budget capped at 1024 tokens.
+
+| Metric                                  | Mean       | Std        | n          |
+| --------------------------------------- | ---------- | ---------- | ---------- |
+| MMS (mean max similarity)               | 0.5165     | 0.1142     | 42,728     |
+| SR@3                                    | 0.3791     | 0.2996     | 42,728     |
+| SR@5                                    | 0.4794     | 0.3001     | 42,728     |
+| SR@10                                   | 0.6007     | 0.2835     | 42,728     |
+| CCR (cuisine coverage recall)           | 0.7660     | 0.3164     | 41,166     |
+| ILD (intra-list diversity)              | 0.6512     | 0.0554     | 42,728     |
+| TCD (title cluster diversity)           | 0.8545     | 0.1361     | 42,728     |
+| Redundancy Rate                         | 0.0135     | 0.0217     | 42,728     |
+| OHCD (order history coverage diversity) | 0.4417     | 0.2654     | 42,728     |
+| FCS (format compliance)                 | 0.8326     | 0.0037     | 42,728     |
+| **Composite Quality Score**             | **0.5816** | **0.0944** | **42,728** |
+
+
+### Breakdown by Daypart
+
+
+| Daypart            | Count | MMS    | SR@5   | CCR    | ILD    | Composite |
+| ------------------ | ----- | ------ | ------ | ------ | ------ | --------- |
+| weekday_breakfast  | 4,536 | 0.5113 | 0.4896 | 0.8810 | 0.6262 | 0.5899    |
+| weekday_dinner     | 7,553 | 0.5138 | 0.4605 | 0.6842 | 0.6590 | 0.5856    |
+| weekday_late_night | 4,806 | 0.5253 | 0.4949 | 0.7777 | 0.6604 | 0.5825    |
+| weekday_lunch      | 6,999 | 0.5076 | 0.4617 | 0.7398 | 0.6421 | 0.5854    |
+| weekend_breakfast  | 3,649 | 0.5274 | 0.5251 | 0.8957 | 0.6315 | 0.5941    |
+| weekend_dinner     | 6,052 | 0.5175 | 0.4691 | 0.7092 | 0.6662 | 0.5686    |
+| weekend_late_night | 3,431 | 0.5323 | 0.5105 | 0.8011 | 0.6647 | 0.5754    |
+| weekend_lunch      | 5,702 | 0.5100 | 0.4683 | 0.7632 | 0.6526 | 0.5735    |
 
 
 ## prompt4_no_think_no_rationale — Overall Metrics
@@ -59,7 +153,6 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 | TCD (title cluster diversity)           | 0.8621     | 0.1322     | 42,963     |
 | Redundancy Rate                         | 0.0132     | 0.0217     | 42,963     |
 | OHCD (order history coverage diversity) | 0.4442     | 0.2664     | 42,963     |
-| TMC (title-metadata coherence)          | 0.1607     | 0.0220     | 42,963     |
 | FCS (format compliance)                 | 0.8324     | 0.0040     | 42,963     |
 | **Composite Quality Score**             | **0.5858** | **0.0954** | **42,963** |
 
@@ -93,7 +186,6 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 | TCD (title cluster diversity)           | 0.8781     | 0.1253     | 43,403     |
 | Redundancy Rate                         | 0.0088     | 0.0163     | 43,403     |
 | OHCD (order history coverage diversity) | 0.4373     | 0.2638     | 43,403     |
-| TMC (title-metadata coherence)          | 0.1665     | 0.0205     | 43,403     |
 | FCS (format compliance)                 | 0.8326     | 0.0035     | 43,403     |
 | **Composite Quality Score**             | **0.5767** | **0.0945** | **43,403** |
 
@@ -127,7 +219,6 @@ Prompt4 variant with LLM thinking tokens disabled and no rationale in the output
 | TCD (title cluster diversity)           | 0.8949     | 0.1125     | 43,331     |
 | Redundancy Rate                         | 0.0066     | 0.0129     | 43,331     |
 | OHCD (order history coverage diversity) | 0.4353     | 0.2626     | 43,331     |
-| TMC (title-metadata coherence)          | 0.1694     | 0.0199     | 43,331     |
 | FCS (format compliance)                 | 0.8314     | 0.0061     | 43,331     |
 | **Composite Quality Score**             | **0.5750** | **0.0944** | **43,331** |
 
@@ -171,7 +262,6 @@ We compared 42,949 matched (consumer, daypart) pairs using a Wilcoxon signed-ran
 | TCD | 0.8780 | 0.8621 | +0.0159 | +0.11 | negligible | <0.001 | Yes |
 | Redundancy Rate | 0.0088 | 0.0132 | -0.0044 | -0.20 | negligible | <0.001 | Yes |
 | OHCD | 0.4373 | 0.4442 | -0.0069 | -0.08 | negligible | <0.001 | Yes |
-| TMC | 0.1665 | 0.1607 | +0.0058 | +0.27 | small | <0.001 | Yes |
 | FCS | 0.8326 | 0.8324 | +0.0002 | +0.05 | negligible | <0.001 | Yes |
 | **Composite** | **0.5768** | **0.5858** | **-0.0090** | **-0.14** | **negligible** | **<0.001** | **Yes** |
 
@@ -183,7 +273,7 @@ Almost all differences are **statistically real** (p < 0.001) — but with 43k d
 
 **no_think edges ahead on relevance:** MMS (small effect), ILD (small effect), SR@10, SR@5, OHCD, and the Composite — but all with negligible-to-small effect sizes.
 
-**prompt4 edges ahead on structure:** TMC (small effect), TCD, CCR, Redundancy Rate, FCS — again all negligible-to-small.
+**prompt4 edges ahead on structure:** TCD, CCR, Redundancy Rate, FCS — again all negligible-to-small.
 
 **No difference at all:** SR@3 (p=0.55, not even statistically significant).
 
@@ -201,46 +291,55 @@ Almost all differences are **statistically real** (p < 0.001) — but with 43k d
 | Total carousels          | 813,360   | 805,753               | -7,607   |
 | Distinct carousel titles | 39,718    | 64,083                | +24,365  |
 | Avg carousels/consumer   | 80.0      | 79.2                  | -0.8     |
-| Brand-specific titles    | 0.64%     | 1.99%                 | +1.35pp  |
+| Brand-specific titles    | 0.66%     | 2.18%                 | +1.52pp  |
 
 - Same 10,170 consumers in both files.
 - No-think is missing 722 daypart groups and 7,607 carousels — the model occasionally fails to produce complete output without thinking tokens (25 fully empty groups, plus some partial groups).
 - Despite fewer total carousels, no-think produces 61% more distinct titles (64,083 vs 39,718). Without thinking, the model generates more varied, specific item-level names (e.g. "Chicken McNuggets Happy Meals", "Sausage egg mcgriddles") rather than reusing generic category titles across consumers.
-- No-think has 3x more brand-specific titles (1.99% vs 0.64%), producing names that match order history items more closely via embedding similarity. This likely explains the higher MMS/SR@K scores despite no thinking tokens.
+- No-think has 3.3x more brand-specific titles (2.18% vs 0.66%), producing names that match order history items more closely via embedding similarity. This likely explains the higher MMS/SR@K scores despite no thinking tokens. The 1024-token variants sit in between (1.51%).
 
 
 ## Brand-Name Title Analysis
 
-No_think produces 3.3x more brand-name titles (18,149 vs 5,445), but the increase is driven by **repetition of the same items across consumers**, not broader brand diversity. Distinct brand titles only grow 2.3x (854 vs 366).
+The same brand keyword set was applied to all four prompt4-family variants. The two `_think_1024` variants sit roughly halfway between prompt4 (default thinking) and no_think — confirming that brand repetition scales monotonically with how much the model is allowed to skip deliberation.
 
-### Top brand-name titles
+### Brand share
 
-| Title | prompt4 | no_think | ratio |
-| --- | --- | --- | --- |
-| Chicken mcnuggets / McNuggets | 756 | 2,875 | 3.8x |
-| Big mac burgers / Big Mac burgers | 778 | 1,351 | 1.7x |
-| Sausage egg mcgriddles | 275 | 1,120 | 4.1x |
-| Whopper burgers / meals | 433 | 1,226 | 2.8x |
-| Happy meal variants | 79 | 1,039 | 13.2x |
-| Sausage egg mcmuffins | 146 | 807 | 5.5x |
-| Big mac meals / Big Mac meals | 315 | 1,767 | 5.6x |
+| Variant                 | Total titles | Brand-title rows | Brand share | Distinct brand titles |
+| ----------------------- | -----------: | ---------------: | ----------: | --------------------: |
+| prompt4                 |      813,360 |            5,367 |       0.66% |                   279 |
+| think_1024              |      808,609 |           12,235 |       1.51% |                   433 |
+| no_rationale_think_1024 |      800,344 |           12,111 |       1.51% |                   417 |
+| no_think                |      805,748 |           17,531 |       2.18% |                   564 |
 
 ### Brand keyword frequency
 
-| Brand keyword | prompt4 | no_think | ratio |
-| --- | --- | --- | --- |
-| big mac | 1,622 | 4,315 | 2.7x |
-| mcnugget | 837 | 3,526 | 4.2x |
-| whopper | 768 | 2,507 | 3.3x |
-| mcgriddle | 676 | 2,306 | 3.4x |
-| mcmuffin | 472 | 1,921 | 4.1x |
-| chipotle | 838 | 1,135 | 1.4x |
-| happy meal | 79 | 1,039 | 13.1x |
-| mcchicken | 49 | 509 | 10.4x |
-| chick-fil-a | 12 | 177 | 14.8x |
-| kfc | 15 | 163 | 10.9x |
+| Brand keyword | prompt4 | think_1024 | no_rationale_think_1024 | no_think |
+| ------------- | ------: | ---------: | ----------------------: | -------: |
+| big mac       |   1,622 |      3,425 |                   3,389 |    4,315 |
+| mcnugget      |     837 |      2,425 |                   2,125 |    3,526 |
+| whopper       |     768 |      1,923 |                   1,849 |    2,507 |
+| mcgriddle     |     676 |      1,538 |                   1,574 |    2,306 |
+| mcmuffin      |     472 |      1,176 |                   1,204 |    1,921 |
+| chipotle      |     838 |        867 |                     931 |    1,135 |
+| happy meal    |      79 |        501 |                     672 |    1,039 |
+| mcchicken     |      49 |        248 |                     254 |      509 |
+| chick-fil-a   |      12 |         62 |                      26 |      177 |
+| kfc           |      15 |         96 |                     100 |      163 |
 
-The no_think model heavily defaults to McDonald's and Burger King item names across many consumers. These brand-specific titles (e.g., "Chicken McNuggets") closely match exact item names in order history, inflating MMS/SR@K scores compared to prompt4's more generic titles (e.g., "Chicken nuggets") which are semantically similar but not as close an embedding match. This suggests the no_think relevance gains are partly an artifact of title specificity rather than better personalization.
+### Top brand-name title clusters
+
+| Title cluster                 | prompt4 | think_1024 | no_rationale_think_1024 | no_think |
+| ----------------------------- | ------: | ---------: | ----------------------: | -------: |
+| Chicken mcnuggets / McNuggets |     828 |      2,318 |                   2,065 |    3,329 |
+| Big mac burgers               |     778 |      1,120 |                   1,179 |    1,352 |
+| Big mac meals                 |     315 |      1,277 |                   1,293 |    1,767 |
+| Whopper burgers / meals       |     574 |      1,457 |                   1,424 |    1,786 |
+| Happy meal variants           |      79 |        501 |                     672 |    1,039 |
+| Sausage egg mcgriddles        |     275 |        551 |                     547 |      715 |
+| Sausage egg mcmuffins         |     156 |        329 |                     356 |      456 |
+
+Cutting the thinking budget from default (~8192) to 1024 roughly **doubles** the brand-share (0.66% → 1.51%), and removing thinking entirely roughly **triples** it (→ 2.18%). The no_rationale variant of think_1024 is essentially indistinguishable from think_1024 on brand share — the rationale field's presence/absence has little effect once the budget is fixed, suggesting the brand-repetition effect is driven by reasoning depth, not output format. The same MMS/SR@K inflation noted for no_think applies in muted form to the 1024-token variants.
 
 
 ## Summary
@@ -258,6 +357,5 @@ The no_think model heavily defaults to McDonald's and Burger King item names acr
 
 ## Notes
 
-- TMC is excluded from the composite score because the carousel format lacks `food_type` tags; title-metadata coherence cannot be properly computed (~0.17 across all variants).
 - CCR uses `cuisine_filter` from carousels mapped to the taxonomy, and `cuisine_tags_from_menu` from Snowflake order history.
 - TCD and Redundancy Rate are diagnostic metrics not included in the composite score.
