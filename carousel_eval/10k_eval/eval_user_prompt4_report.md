@@ -12,6 +12,7 @@ The five compared variants:
 - **`prompt_v4_thinking_1024`** — `prompt_v4` with thinking-token budget capped at 1024; rationale field still produced.
 - **`prompt_v4_no_rationale_thinking_1024`** — `prompt_v4` with thinking-token budget capped at 1024 and the rationale field removed from output.
 - **`prompt_v4_no_thinking_no_rationale`** — `prompt_v4` with thinking tokens disabled and the rationale field removed from output.
+- **`genai_v2_thinking_1024`** — GenAI v2 model (v319 batch) with thinking-token budget capped at 1024.
 
 ## Composite Score Formula
 
@@ -37,21 +38,21 @@ When a metric is missing (e.g. CCR with no cuisine data), weights are renormaliz
 
 Five variants are compared. The two `_thinking_1024` variants are runs of the `prompt_v4` family with the LLM's thinking budget capped at 1024 tokens.
 
-| Metric                         | prompt_v1  | prompt_v4  | prompt_v4_no_thinking_no_rationale | prompt_v4_thinking_1024 | prompt_v4_no_rationale_thinking_1024 |
-| ------------------------------ | ---------- | ---------- | ---------------------------------- | ----------------------- | ------------------------------------ |
-| **Composite Quality Score**    | **0.5750** | **0.5767** | **0.5858**                         | **0.5804**              | **0.5816**                           |
-| MMS (mean max similarity)      | 0.4962     | 0.5013     | 0.5260                             | 0.5138                  | 0.5165                               |
-| SR@3                           | 0.3716     | 0.3794     | 0.3816                             | 0.3782                  | 0.3791                               |
-| SR@5                           | 0.4623     | 0.4712     | 0.4840                             | 0.4762                  | 0.4794                               |
-| SR@10                          | 0.5679     | 0.5795     | 0.6108                             | 0.5935                  | 0.6007                               |
-| CCR (cuisine coverage recall)  | 0.7778     | 0.7757     | 0.7627                             | 0.7683                  | 0.7660                               |
-| ILD (intra-list diversity)     | 0.6550     | 0.6468     | 0.6606                             | 0.6516                  | 0.6512                               |
-| TCD (title cluster diversity)  | 0.8949     | 0.8781     | 0.8621                             | 0.8616                  | 0.8545                               |
-| Redundancy Rate                | 0.0066     | 0.0088     | 0.0132                             | 0.0125                  | 0.0135                               |
-| OHCD                           | 0.4353     | 0.4373     | 0.4442                             | 0.4400                  | 0.4417                               |
-| FCS (format compliance)        | 0.8314     | 0.8326     | 0.8324                             | 0.8325                  | 0.8326                               |
-| Consumers evaluated            | 9,444      | 9,461      | 9,372                              | 9,407                   | 9,312                                |
-| (consumer, daypart) groups     | 43,331     | 43,403     | 42,963                             | 43,145                  | 42,728                               |
+| Metric                         | prompt_v1  | prompt_v4  | prompt_v4_no_thinking_no_rationale | prompt_v4_thinking_1024 | prompt_v4_no_rationale_thinking_1024 | genai_v2_thinking_1024 |
+| ------------------------------ | ---------- | ---------- | ---------------------------------- | ----------------------- | ------------------------------------ | ---------------------- |
+| **Composite Quality Score**    | **0.5750** | **0.5767** | **0.5858**                         | **0.5804**              | **0.5816**                           | **0.5804**             |
+| MMS (mean max similarity)      | 0.4962     | 0.5013     | 0.5260                             | 0.5138                  | 0.5165                               | 0.5122                 |
+| SR@3                           | 0.3716     | 0.3794     | 0.3816                             | 0.3782                  | 0.3791                               | 0.3743                 |
+| SR@5                           | 0.4623     | 0.4712     | 0.4840                             | 0.4762                  | 0.4794                               | 0.4734                 |
+| SR@10                          | 0.5679     | 0.5795     | 0.6108                             | 0.5935                  | 0.6007                               | 0.5911                 |
+| CCR (cuisine coverage recall)  | 0.7778     | 0.7757     | 0.7627                             | 0.7683                  | 0.7660                               | 0.7698                 |
+| ILD (intra-list diversity)     | 0.6550     | 0.6468     | 0.6606                             | 0.6516                  | 0.6512                               | 0.6530                 |
+| TCD (title cluster diversity)  | 0.8949     | 0.8781     | 0.8621                             | 0.8616                  | 0.8545                               | 0.8715                 |
+| Redundancy Rate                | 0.0066     | 0.0088     | 0.0132                             | 0.0125                  | 0.0135                               | 0.0102                 |
+| OHCD                           | 0.4353     | 0.4373     | 0.4442                             | 0.4400                  | 0.4417                               | 0.4423                 |
+| FCS (format compliance)        | 0.8314     | 0.8326     | 0.8324                             | 0.8325                  | 0.8326                               | 0.8316                 |
+| Consumers evaluated            | 9,444      | 9,461      | 9,372                              | 9,407                   | 9,312                                | 9,179                  |
+| (consumer, daypart) groups     | 43,331     | 43,403     | 42,963                             | 43,145                  | 42,728                               | 42,280                 |
 
 ### Effect of capping the thinking budget at 1024 tokens (vs `prompt_v4` default)
 
@@ -248,6 +249,40 @@ Five variants are compared. The two `_thinking_1024` variants are runs of the `p
 | weekend_lunch      | 5,785 | 0.4899 | 0.4482 | 0.7737 | 0.6620 | 0.5668    |
 
 
+## `genai_v2_thinking_1024` — Overall Metrics
+
+GenAI v2 model (v319 batch) with the LLM thinking budget capped at 1024 tokens.
+
+| Metric                                  | Mean       | Std        | n          |
+| --------------------------------------- | ---------- | ---------- | ---------- |
+| MMS (mean max similarity)               | 0.5122     | 0.1143     | 42,279     |
+| SR@3                                    | 0.3743     | 0.2987     | 42,279     |
+| SR@5                                    | 0.4734     | 0.2998     | 42,279     |
+| SR@10                                   | 0.5911     | 0.2859     | 42,279     |
+| CCR (cuisine coverage recall)           | 0.7698     | 0.3142     | 40,740     |
+| ILD (intra-list diversity)              | 0.6530     | 0.0547     | 42,279     |
+| TCD (title cluster diversity)           | 0.8715     | 0.1268     | 42,279     |
+| Redundancy Rate                         | 0.0102     | 0.0174     | 42,279     |
+| OHCD (order history coverage diversity) | 0.4423     | 0.2669     | 42,279     |
+| FCS (format compliance)                 | 0.8316     | 0.0057     | 42,280     |
+| **Composite Quality Score**             | **0.5804** | **0.0955** | **42,280** |
+
+
+### Breakdown by Daypart
+
+
+| Daypart            | Count | MMS    | SR@5   | CCR    | ILD    | Composite |
+| ------------------ | ----- | ------ | ------ | ------ | ------ | --------- |
+| weekday_breakfast  | 4,499 | 0.5101 | 0.4952 | 0.8863 | 0.6272 | 0.5927    |
+| weekday_dinner     | 7,465 | 0.5096 | 0.4509 | 0.6883 | 0.6615 | 0.5837    |
+| weekday_late_night | 4,761 | 0.5206 | 0.4927 | 0.7797 | 0.6565 | 0.5813    |
+| weekday_lunch      | 6,906 | 0.5034 | 0.4556 | 0.7478 | 0.6460 | 0.5852    |
+| weekend_breakfast  | 3,636 | 0.5219 | 0.5203 | 0.8930 | 0.6295 | 0.5913    |
+| weekend_dinner     | 5,984 | 0.5139 | 0.4602 | 0.7115 | 0.6717 | 0.5668    |
+| weekend_late_night | 3,390 | 0.5264 | 0.5019 | 0.8059 | 0.6626 | 0.5728    |
+| weekend_lunch      | 5,639 | 0.5045 | 0.4581 | 0.7659 | 0.6574 | 0.5714    |
+
+
 ## Statistical Significance: `prompt_v4` vs `prompt_v4_no_thinking_no_rationale`
 
 We compared 42,949 matched (consumer, daypart) pairs using a Wilcoxon signed-rank test to determine whether the differences between `prompt_v4` and `prompt_v4_no_thinking_no_rationale` are real or just noise.
@@ -318,38 +353,41 @@ The same brand keyword set was applied to all four `prompt_v4`-family variants. 
 | Variant                                | Total titles | Brand-title rows | Brand share | Distinct brand titles |
 | -------------------------------------- | -----------: | ---------------: | ----------: | --------------------: |
 | prompt_v4                              |      813,360 |            5,367 |       0.66% |                   279 |
+| genai_v2_thinking_1024                 |      784,317 |            8,406 |       1.07% |                   319 |
 | prompt_v4_thinking_1024                |      808,609 |           12,235 |       1.51% |                   433 |
 | prompt_v4_no_rationale_thinking_1024   |      800,344 |           12,111 |       1.51% |                   417 |
 | prompt_v4_no_thinking_no_rationale     |      805,748 |           17,531 |       2.18% |                   564 |
 
 ### Brand keyword frequency
 
-| Brand keyword | prompt_v4 | prompt_v4_thinking_1024 | prompt_v4_no_rationale_thinking_1024 | prompt_v4_no_thinking_no_rationale |
-| ------------- | --------: | ----------------------: | -----------------------------------: | ---------------------------------: |
-| big mac       |     1,622 |                   3,425 |                                3,389 |                              4,315 |
-| mcnugget      |       837 |                   2,425 |                                2,125 |                              3,526 |
-| whopper       |       768 |                   1,923 |                                1,849 |                              2,507 |
-| mcgriddle     |       676 |                   1,538 |                                1,574 |                              2,306 |
-| mcmuffin      |       472 |                   1,176 |                                1,204 |                              1,921 |
-| chipotle      |       838 |                     867 |                                  931 |                              1,135 |
-| happy meal    |        79 |                     501 |                                  672 |                              1,039 |
-| mcchicken     |        49 |                     248 |                                  254 |                                509 |
-| chick-fil-a   |        12 |                      62 |                                   26 |                                177 |
-| kfc           |        15 |                      96 |                                  100 |                                163 |
+| Brand keyword | prompt_v4 | genai_v2_thinking_1024 | prompt_v4_thinking_1024 | prompt_v4_no_rationale_thinking_1024 | prompt_v4_no_thinking_no_rationale |
+| ------------- | --------: | ---------------------: | ----------------------: | -----------------------------------: | ---------------------------------: |
+| big mac       |     1,622 |                  2,650 |                   3,425 |                                3,389 |                              4,315 |
+| mcnugget      |       837 |                  1,342 |                   2,425 |                                2,125 |                              3,526 |
+| whopper       |       768 |                  1,203 |                   1,923 |                                1,849 |                              2,507 |
+| mcgriddle     |       676 |                  1,188 |                   1,538 |                                1,574 |                              2,306 |
+| mcmuffin      |       472 |                    947 |                   1,176 |                                1,204 |                              1,921 |
+| chipotle      |       838 |                    377 |                     867 |                                  931 |                              1,135 |
+| happy meal    |        79 |                    582 |                     501 |                                  672 |                              1,039 |
+| mcchicken     |        49 |                    108 |                     248 |                                  254 |                                509 |
+| chick-fil-a   |        12 |                     31 |                      62 |                                   26 |                                177 |
+| kfc           |        15 |                     20 |                      96 |                                  100 |                                163 |
 
 ### Top brand-name title clusters
 
-| Title cluster                 | prompt_v4 | prompt_v4_thinking_1024 | prompt_v4_no_rationale_thinking_1024 | prompt_v4_no_thinking_no_rationale |
-| ----------------------------- | --------: | ----------------------: | -----------------------------------: | ---------------------------------: |
-| Chicken mcnuggets / McNuggets |       828 |                   2,318 |                                2,065 |                              3,329 |
-| Big mac burgers               |       778 |                   1,120 |                                1,179 |                              1,352 |
-| Big mac meals                 |       315 |                   1,277 |                                1,293 |                              1,767 |
-| Whopper burgers / meals       |       574 |                   1,457 |                                1,424 |                              1,786 |
-| Happy meal variants           |        79 |                     501 |                                  672 |                              1,039 |
-| Sausage egg mcgriddles        |       275 |                     551 |                                  547 |                                715 |
-| Sausage egg mcmuffins         |       156 |                     329 |                                  356 |                                456 |
+| Title cluster                 | prompt_v4 | genai_v2_thinking_1024 | prompt_v4_thinking_1024 | prompt_v4_no_rationale_thinking_1024 | prompt_v4_no_thinking_no_rationale |
+| ----------------------------- | --------: | ---------------------: | ----------------------: | -----------------------------------: | ---------------------------------: |
+| Chicken mcnuggets / McNuggets |       828 |                  1,322 |                   2,318 |                                2,065 |                              3,329 |
+| Big mac burgers               |       778 |                    323 |                   1,120 |                                1,179 |                              1,352 |
+| Big mac meals                 |       315 |                    669 |                   1,277 |                                1,293 |                              1,767 |
+| Whopper burgers / meals       |       574 |                    737 |                   1,457 |                                1,424 |                              1,786 |
+| Happy meal variants           |        79 |                    582 |                     501 |                                  672 |                              1,039 |
+| Sausage egg mcgriddles        |       275 |                    120 |                     551 |                                  547 |                                715 |
+| Sausage egg mcmuffins         |       156 |                     73 |                     329 |                                  356 |                                456 |
 
-Cutting the thinking budget from default (~8192) to 1024 roughly **doubles** the brand-share (0.66% → 1.51%), and removing thinking entirely roughly **triples** it (→ 2.18%). `prompt_v4_no_rationale_thinking_1024` is essentially indistinguishable from `prompt_v4_thinking_1024` on brand share — the rationale field's presence/absence has little effect once the budget is fixed, suggesting the brand-repetition effect is driven by reasoning depth, not output format. The same MMS/SR@K inflation noted for `prompt_v4_no_thinking_no_rationale` applies in muted form to the 1024-token variants.
+Cutting the thinking budget from default (~8192) to 1024 roughly **doubles** the brand-share for `prompt_v4` (0.66% → 1.51%), and removing thinking entirely roughly **triples** it (→ 2.18%). `prompt_v4_no_rationale_thinking_1024` is essentially indistinguishable from `prompt_v4_thinking_1024` on brand share — the rationale field's presence/absence has little effect once the budget is fixed, suggesting the brand-repetition effect is driven by reasoning depth, not output format.
+
+`genai_v2_thinking_1024` sits between `prompt_v4` and the `prompt_v4_thinking_1024` variants at **1.07%**, despite also using a 1024-token thinking budget. The v2 model appears to resist brand-name repetition better than the v4 prompt at the same budget — its per-keyword counts are consistently 40–60% lower than `prompt_v4_thinking_1024` across most keywords, and notably lower on "chipotle" (377 vs 867). The same MMS/SR@K inflation noted for `prompt_v4_no_thinking_no_rationale` applies in muted form to the 1024-token variants, and `genai_v2_thinking_1024` is the least affected.
 
 
 ## Summary

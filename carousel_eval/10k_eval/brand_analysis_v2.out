@@ -1,0 +1,39 @@
+[load] 10k_user_promp4.csv
+[load] 10k_user_prompt4_no_think_no_rationale.csv
+[load] 10k_user_prompt_4_think_1024.csv
+[load] 10k_user_prompt_4_no_rationale_think_1024.csv
+[load] 10k_user_v2_1024thinking.csv
+
+## Volume / brand share
+| Variant | Total titles | Brand-title rows | Brand share | Distinct brand titles |
+| --- | ---: | ---: | ---: | ---: |
+| prompt4 | 813,360 | 5,367 | 0.66% | 279 |
+| no_think | 805,748 | 17,531 | 2.18% | 564 |
+| think_1024 | 808,609 | 12,235 | 1.51% | 433 |
+| no_rationale_think_1024 | 800,344 | 12,111 | 1.51% | 417 |
+| genai_v2_think_1024 | 784,317 | 8,406 | 1.07% | 319 |
+
+## Brand keyword frequency
+| Brand keyword | prompt4 | no_think | think_1024 | no_rationale_think_1024 | genai_v2_think_1024 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| big mac | 1,622 | 4,315 | 3,425 | 3,389 | 2,650 |
+| mcnugget | 837 | 3,526 | 2,425 | 2,125 | 1,342 |
+| whopper | 768 | 2,507 | 1,923 | 1,849 | 1,203 |
+| mcgriddle | 676 | 2,306 | 1,538 | 1,574 | 1,188 |
+| mcmuffin | 472 | 1,921 | 1,176 | 1,204 | 947 |
+| chipotle | 838 | 1,135 | 867 | 931 | 377 |
+| happy meal | 79 | 1,039 | 501 | 672 | 582 |
+| mcchicken | 49 | 509 | 248 | 254 | 108 |
+| chick-fil-a | 12 | 177 | 62 | 26 | 31 |
+| kfc | 15 | 163 | 96 | 100 | 20 |
+
+## Top brand-name title clusters (counts)
+| Title cluster | prompt4 | no_think | think_1024 | no_rationale_think_1024 | genai_v2_think_1024 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| chicken mcnuggets / mcnuggets | 828 | 3,329 | 2,318 | 2,065 | 1,322 |
+| big mac burgers | 778 | 1,352 | 1,120 | 1,179 | 323 |
+| big mac meals | 315 | 1,767 | 1,277 | 1,293 | 669 |
+| sausage egg mcgriddles | 275 | 715 | 551 | 547 | 120 |
+| whopper burgers / meals | 574 | 1,786 | 1,457 | 1,424 | 737 |
+| happy meal variants | 79 | 1,039 | 501 | 672 | 582 |
+| sausage egg mcmuffins | 156 | 456 | 329 | 356 | 73 |
