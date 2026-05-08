@@ -30,7 +30,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import snowflake.connector
 
 from significance_test import (
-    METRIC_COLS,
     METRIC_DISPLAY,
     LOWER_IS_BETTER,
     holm_bonferroni,
@@ -39,6 +38,13 @@ from significance_test import (
     d_label,
 )
 
+
+# TMC excluded: computed from empty food_type in the 10k eval format, so unreliable.
+METRIC_COLS = [
+    "mms", "sr_at_3", "sr_at_5", "sr_at_10",
+    "ccr", "ild", "tcd", "redundancy_rate",
+    "ohcd", "fcs", "composite_quality_score",
+]
 
 LABEL_COLS = ["is_sparse_order", "is_sparse_browse"]
 

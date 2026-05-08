@@ -20,12 +20,11 @@
 | TCD | 0.8542 | 0.8715 | -0.0173 | -0.1209 | negligible | 6.21e-121 | Yes |
 | Redundancy Rate | 0.0135 | 0.0102 | +0.0034 | +0.1503 | negligible | 4.51e-196 | Yes |
 | OHCD | 0.4426 | 0.4424 | +0.0002 | +0.0017 | negligible | 0.6132 | No |
-| TMC | 0.1629 | 0.1675 | -0.0046 | -0.2161 | small | 0.00e+00 | Yes |
 | FCS | 0.8326 | 0.8316 | +0.0010 | +0.1670 | negligible | 3.48e-240 | Yes |
 | **Composite** | 0.5818 | 0.5804 | +0.0014 | +0.0235 | negligible | 5.28e-04 | **Yes** |
 
 **no_rationale_think_1024 better:** MMS (d=+0.062), SR@3 (d=+0.021), SR@5 (d=+0.028), SR@10 (d=+0.046), FCS (d=+0.167), Composite (d=+0.023)
-**genai_v2_think_1024 better:** CCR (d=-0.036), ILD (d=-0.035), TCD (d=-0.121), Redundancy Rate (d=+0.150), TMC (d=-0.216)
+**genai_v2_think_1024 better:** CCR (d=-0.036), ILD (d=-0.035), TCD (d=-0.121), Redundancy Rate (d=+0.150)
 **No significant difference:** OHCD
 
 ## Breakdown by IS_SPARSE_ORDER
@@ -34,22 +33,21 @@
 
 | Metric | Mean no_rationale_think_1024 | Mean genai_v2_think_1024 | Mean Diff | Cohen's d | Effect | Adj. p | Sig? |
 | --- | ---: | ---: | ---: | ---: | --- | ---: | --- |
-| MMS | 0.5523 | 0.5357 | +0.0166 | +0.1848 | negligible | 9.66e-10 | Yes |
-| SR@3 | 0.5123 | 0.4713 | +0.0410 | +0.1396 | negligible | 6.75e-06 | Yes |
-| SR@5 | 0.5960 | 0.5624 | +0.0336 | +0.1109 | negligible | 3.17e-04 | Yes |
-| SR@10 | 0.6932 | 0.6453 | +0.0479 | +0.1655 | negligible | 7.43e-08 | Yes |
-| CCR | 0.7705 | 0.7670 | +0.0035 | +0.0357 | negligible | 0.4417 | No |
-| ILD | 0.6351 | 0.6493 | -0.0142 | -0.2602 | small | 5.02e-18 | Yes |
-| TCD | 0.8240 | 0.8742 | -0.0502 | -0.3173 | small | 4.34e-25 | Yes |
-| Redundancy Rate | 0.0164 | 0.0084 | +0.0080 | +0.3284 | small | 5.24e-29 | Yes |
-| OHCD | 0.2084 | 0.2051 | +0.0033 | +0.0631 | negligible | 0.1213 | No |
-| TMC | 0.1747 | 0.1748 | -0.0001 | -0.0047 | negligible | 0.8467 | No |
-| FCS | 0.8327 | 0.8312 | +0.0015 | +0.2259 | small | 1.03e-13 | Yes |
-| **Composite** | 0.5616 | 0.5522 | +0.0094 | +0.1228 | negligible | 0.0865 | **No** |
+| MMS | 0.5523 | 0.5357 | +0.0166 | +0.1848 | negligible | 8.45e-10 | Yes |
+| SR@3 | 0.5123 | 0.4713 | +0.0410 | +0.1396 | negligible | 5.63e-06 | Yes |
+| SR@5 | 0.5960 | 0.5624 | +0.0336 | +0.1109 | negligible | 2.54e-04 | Yes |
+| SR@10 | 0.6932 | 0.6453 | +0.0479 | +0.1655 | negligible | 6.37e-08 | Yes |
+| CCR | 0.7705 | 0.7670 | +0.0035 | +0.0357 | negligible | 0.2209 | No |
+| ILD | 0.6351 | 0.6493 | -0.0142 | -0.2602 | small | 4.52e-18 | Yes |
+| TCD | 0.8240 | 0.8742 | -0.0502 | -0.3173 | small | 3.95e-25 | Yes |
+| Redundancy Rate | 0.0164 | 0.0084 | +0.0080 | +0.3284 | small | 4.80e-29 | Yes |
+| OHCD | 0.2084 | 0.2051 | +0.0033 | +0.0631 | negligible | 0.0809 | No |
+| FCS | 0.8327 | 0.8312 | +0.0015 | +0.2259 | small | 9.16e-14 | Yes |
+| **Composite** | 0.5616 | 0.5522 | +0.0094 | +0.1228 | negligible | 0.0648 | **No** |
 
 **no_rationale_think_1024 better:** MMS (d=+0.185), SR@3 (d=+0.140), SR@5 (d=+0.111), SR@10 (d=+0.166), FCS (d=+0.226)
 **genai_v2_think_1024 better:** ILD (d=-0.260), TCD (d=-0.317), Redundancy Rate (d=+0.328)
-**No significant difference:** CCR, OHCD, TMC, Composite
+**No significant difference:** CCR, OHCD, Composite
 
 ### IS_SPARSE_ORDER = False  (8,044 consumers)  (n=40,359 pairs)
 
@@ -64,12 +62,11 @@
 | TCD | 0.8552 | 0.8714 | -0.0163 | -0.1142 | negligible | 6.50e-105 | Yes |
 | Redundancy Rate | 0.0135 | 0.0102 | +0.0032 | +0.1444 | negligible | 3.24e-175 | Yes |
 | OHCD | 0.4499 | 0.4498 | +0.0001 | +0.0006 | negligible | 0.7850 | No |
-| TMC | 0.1625 | 0.1672 | -0.0047 | -0.2235 | small | 0.00e+00 | Yes |
 | FCS | 0.8326 | 0.8316 | +0.0009 | +0.1650 | negligible | 1.43e-227 | Yes |
 | **Composite** | 0.5824 | 0.5813 | +0.0011 | +0.0194 | negligible | 0.0025 | **Yes** |
 
 **no_rationale_think_1024 better:** MMS (d=+0.057), SR@3 (d=+0.016), SR@5 (d=+0.024), SR@10 (d=+0.041), FCS (d=+0.165), Composite (d=+0.019)
-**genai_v2_think_1024 better:** CCR (d=-0.038), ILD (d=-0.027), TCD (d=-0.114), Redundancy Rate (d=+0.144), TMC (d=-0.223)
+**genai_v2_think_1024 better:** CCR (d=-0.038), ILD (d=-0.027), TCD (d=-0.114), Redundancy Rate (d=+0.144)
 **No significant difference:** OHCD
 
 ## Breakdown by IS_SPARSE_BROWSE
@@ -78,22 +75,21 @@
 
 | Metric | Mean no_rationale_think_1024 | Mean genai_v2_think_1024 | Mean Diff | Cohen's d | Effect | Adj. p | Sig? |
 | --- | ---: | ---: | ---: | ---: | --- | ---: | --- |
-| MMS | 0.5365 | 0.5302 | +0.0063 | +0.0751 | negligible | 0.5079 | No |
-| SR@3 | 0.5072 | 0.4850 | +0.0223 | +0.0786 | negligible | 0.7516 | No |
-| SR@5 | 0.5817 | 0.5621 | +0.0196 | +0.0683 | negligible | 0.7516 | No |
+| MMS | 0.5365 | 0.5302 | +0.0063 | +0.0751 | negligible | 0.4233 | No |
+| SR@3 | 0.5072 | 0.4850 | +0.0223 | +0.0786 | negligible | 0.6013 | No |
+| SR@5 | 0.5817 | 0.5621 | +0.0196 | +0.0683 | negligible | 0.6013 | No |
 | SR@10 | 0.6514 | 0.6424 | +0.0090 | +0.0343 | negligible | 1.0000 | No |
-| CCR | 0.7494 | 0.7593 | -0.0100 | -0.1397 | negligible | 0.1763 | No |
-| ILD | 0.6315 | 0.6496 | -0.0181 | -0.2926 | small | 1.01e-05 | Yes |
-| TCD | 0.8224 | 0.8703 | -0.0479 | -0.2947 | small | 1.81e-06 | Yes |
-| Redundancy Rate | 0.0172 | 0.0085 | +0.0087 | +0.3319 | small | 2.31e-08 | Yes |
-| OHCD | 0.3262 | 0.3179 | +0.0082 | +0.1461 | negligible | 0.1243 | No |
-| TMC | 0.1728 | 0.1713 | +0.0015 | +0.0607 | negligible | 0.7516 | No |
-| FCS | 0.8323 | 0.8309 | +0.0014 | +0.2209 | small | 4.60e-04 | Yes |
+| CCR | 0.7494 | 0.7593 | -0.0100 | -0.1397 | negligible | 0.1511 | No |
+| ILD | 0.6315 | 0.6496 | -0.0181 | -0.2926 | small | 9.08e-06 | Yes |
+| TCD | 0.8224 | 0.8703 | -0.0479 | -0.2947 | small | 1.65e-06 | Yes |
+| Redundancy Rate | 0.0172 | 0.0085 | +0.0087 | +0.3319 | small | 2.12e-08 | Yes |
+| OHCD | 0.3262 | 0.3179 | +0.0082 | +0.1461 | negligible | 0.1087 | No |
+| FCS | 0.8323 | 0.8309 | +0.0014 | +0.2209 | small | 4.09e-04 | Yes |
 | **Composite** | 0.5768 | 0.5739 | +0.0029 | +0.0403 | negligible | 1.0000 | **No** |
 
 **no_rationale_think_1024 better:** FCS (d=+0.221)
 **genai_v2_think_1024 better:** ILD (d=-0.293), TCD (d=-0.295), Redundancy Rate (d=+0.332)
-**No significant difference:** MMS, SR@3, SR@5, SR@10, CCR, OHCD, TMC, Composite
+**No significant difference:** MMS, SR@3, SR@5, SR@10, CCR, OHCD, Composite
 
 ### IS_SPARSE_BROWSE = False  (8,806 consumers)  (n=41,281 pairs)
 
@@ -108,10 +104,9 @@
 | TCD | 0.8545 | 0.8715 | -0.0170 | -0.1193 | negligible | 9.66e-117 | Yes |
 | Redundancy Rate | 0.0135 | 0.0102 | +0.0033 | +0.1486 | negligible | 4.93e-190 | Yes |
 | OHCD | 0.4435 | 0.4434 | +0.0001 | +0.0009 | negligible | 0.7199 | No |
-| TMC | 0.1628 | 0.1674 | -0.0046 | -0.2188 | small | 0.00e+00 | Yes |
 | FCS | 0.8326 | 0.8316 | +0.0010 | +0.1666 | negligible | 7.95e-237 | Yes |
 | **Composite** | 0.5818 | 0.5805 | +0.0014 | +0.0233 | negligible | 5.26e-04 | **Yes** |
 
 **no_rationale_think_1024 better:** MMS (d=+0.062), SR@3 (d=+0.021), SR@5 (d=+0.027), SR@10 (d=+0.046), FCS (d=+0.167), Composite (d=+0.023)
-**genai_v2_think_1024 better:** CCR (d=-0.035), ILD (d=-0.032), TCD (d=-0.119), Redundancy Rate (d=+0.149), TMC (d=-0.219)
+**genai_v2_think_1024 better:** CCR (d=-0.035), ILD (d=-0.032), TCD (d=-0.119), Redundancy Rate (d=+0.149)
 **No significant difference:** OHCD
