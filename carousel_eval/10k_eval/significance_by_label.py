@@ -39,11 +39,12 @@ from significance_test import (
 )
 
 
-# TMC excluded: computed from empty food_type in the 10k eval format, so unreliable.
+# TMC and FCS excluded: both depend on food_type, which is always empty in the
+# 10k eval carousel format, making their values unreliable.
 METRIC_COLS = [
     "mms", "sr_at_3", "sr_at_5", "sr_at_10",
     "ccr", "ild", "tcd", "redundancy_rate",
-    "ohcd", "fcs", "composite_quality_score",
+    "ohcd", "composite_quality_score",
 ]
 
 LABEL_COLS = ["is_sparse_order", "is_sparse_browse"]
@@ -228,6 +229,21 @@ def main():
         f"- **Effect size**: Cohen's d (paired). |d|<0.2=negligible, 0.2–0.5=small, 0.5–0.8=medium, >0.8=large",
         f"- **Positive mean diff** = {args.label_a} higher; **negative** = {args.label_b} higher",
         f"- **Label source**: `PRODDB.ANDYPARK.cx_carousel_v3_prompt_test_enriched`",
+        "",
+        "## Metrics",
+        "",
+        "| Metric | Full name | Description |",
+        "| --- | --- | --- |",
+        "| MMS | Mean Max Similarity | Mean of each order item's max cosine similarity to any carousel title. Higher = carousels better match order history. |",
+        "| SR@3/5/10 | Semantic Recall @K | Fraction of order items with max carousel similarity ≥ 0.45, evaluated against top-K carousels. Higher = better coverage. |",
+        "| CCR | Cuisine Coverage Recall | Fraction of cuisine families in order history covered by carousel cuisine tags. Higher = broader cuisine match. |",
+        "| ILD | Intra-List Diversity | Mean pairwise dissimilarity between carousel title embeddings. Higher = more diverse carousel set. |",
+        "| TCD | Title Cluster Diversity | Fraction of distinct topic clusters among carousel titles (sim threshold 0.65). Higher = less redundancy at topic level. |",
+        "| Redundancy Rate | Redundancy Rate | Fraction of title pairs with similarity ≥ 0.75 (near-duplicates). Lower = better. |",
+        "| OHCD | Order History Coverage Diversity | Fraction of carousel slots assigned at least one matching order item. Higher = better personalization coverage. |",
+        "| Composite | Composite Quality Score | Weighted average: MMS 20%, SR@5 20%, OHCD 20%, CCR 15%, ILD 15%, FCS 10% (weights renormalized if a metric is missing). |",
+        "",
+        "> TMC and FCS are excluded from this report: both depend on `food_type` tags, which are absent in this carousel format.",
         "",
         "## Overall",
         "",
