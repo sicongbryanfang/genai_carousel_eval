@@ -109,8 +109,8 @@ def format_compliance_score(
         # sentence_case_ok(),  # removed: first-letter capitalization rule
         (words[0].lower() not in ADJECTIVE_BLOCKLIST) if words else True,
         not any(tok in ALCOHOL_TOKENS for tok in title.lower().split()),
-        5 <= len(food_type) <= 15,
-        all(2 <= len(tok.split()) <= 3 for tok in food_type),
+        # food_type count/token checks removed: food_type is absent in the
+        # 10k eval carousel format, making those checks always fail/pass vacuously.
         len(cuisine_type) <= 3,
     ]
     return sum(checks) / len(checks)
