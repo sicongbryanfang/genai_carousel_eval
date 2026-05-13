@@ -80,85 +80,99 @@ V1 carousels in EBR were generated on exactly **9 distinct dates**. Each row in 
 
 ## Extreme Case Analysis
 
-Cases with the largest per-consumer metric gap (top 3 each direction per metric). All from the 27,117 paired rows using the same order history and embedding mode.
+Cases with the largest per-consumer metric gap. **Filtered to (consumer, daypart) pairs with ≥ 5 order history items** to avoid noise from single-item histories (16,132 of 27,117 pairs pass this filter, 59.5%).
 
 ### MMS (Mean Max Similarity)
 
-#### V1 much better than V2
+#### V1 better than V2
 
-| Consumer | Day Part | MMS (V1) | MMS (V2) | Delta |
-|----------|----------|-----------|----------|-------|
-| 18756309 | weekday_late_night | 0.977 | 0.252 | **+0.725** |
-| 232924317 | weekday_lunch | 0.862 | 0.216 | **+0.647** |
-| 687733376 | weekend_breakfast | 0.970 | 0.382 | **+0.588** |
+| Consumer | Day Part | N orders | MMS (V1) | MMS (V2) | Delta |
+|----------|----------|----------|-----------|----------|-------|
+| 928293731 | weekday_breakfast | 5 | 0.745 | 0.378 | **+0.367** |
+| 469662396 | weekend_late_night | 5 | 0.748 | 0.413 | **+0.334** |
 
-**Example — consumer 18756309, weekday_late_night:**
-- V1: `Crispy spicy salt chicken` / `Savory noodle soups` / `Classic hand-mixed shakes` / `Indulgent late-night snacks` / `Sweet and savory dumplings` / `Flavorful fried rice` / `Spicy noodle bowls` / `Tasty chicken wings` / `Comforting soup varieties`
-- V2: `Spicy salt chicken` / `Shrimp fried rice` / `Pad see ewe` / `Yellow curry` / `Tom kha` / `Shrimp spring rolls` / `Steamed dumplings` / `Chicken strips` / `Chicken lo mein` / `Korean beef bowls`
-- **Why V1 wins**: V1 uses broad, abstract category titles ("Savory noodle soups", "Indulgent late-night snacks") that match many order items semantically. V2 uses specific dish names that only match when the user ordered that exact dish.
+**Example — consumer 928293731, weekday_breakfast:**
+- Orders: `Original Blend Iced Coffee` / `Wake-Up Wrap® - Egg and Cheese` / `Classic Donuts` / `Hash Browns` *(+ 1 non-food item)*
+- V1: `Egg and cheese wraps` / `Breakfast sandwiches` / `Classic donuts` / `Hash browns` / `Iced coffee drinks` / `Savory breakfast bowls` / `Breakfast pastries` / `Quick breakfast combos` / `Omelettes and frittatas` / `Warm breakfast wraps`
+- V2: `Bacon egg and cheese sandwiches` / `Chicken nuggets` / `Classic cheeseburgers` / `Steak breakfast burritos` / `Breakfast burritos` / `Breakfast bowls` / `Bagels with cream cheese` / `Breakfast tacos` / `Buttermilk pancakes` / `Chocolate croissants`
+- **Why V1 wins**: V1's category titles ("Classic donuts", "Hash browns", "Iced coffee drinks") are near-exact matches to this user's actual orders. V2 has "Breakfast burritos" and "Breakfast bowls" but misses the specific fast-food breakfast pattern.
 
-**Example — consumer 687733376, weekend_breakfast:**
-- V1: `Vegetable samosas` / `Vegan breakfast tacos` / `Chickpea pancakes` / `Plant-based breakfast burritos` / `Savory tofu chilaquiles` / `Vegan breakfast bowls` / `Spicy avocado toast` / `Breakfast burrito bowls`
-- V2: `Vegan breakfast tacos` / `Vegan breakfast burritos` / `Vegan pancakes` / `French toast` / `Acai bowls` / `Plant-based bagel sandwiches` / `Avocado toast` / `Tofu scramble` / `Plant-based chilaquiles` / `Vegan waffles`
-- **Why V1 wins**: Both are strong for a vegan user; V1's broader category-style titles cover this user's order history better (MMS 0.970 vs 0.382).
+**Example — consumer 469662396, weekend_late_night:**
+- Orders: `Iced Coffee` (×2) / `Whopper Meal` (×3)
+- V1: `Gourmet burgers` / `Snackable desserts` / `Iced coffee drinks` / `Tacos and burritos` / `Comforting late-night snacks`
+- V2: `Flame-grilled burgers` / `Chicken nuggets` / `Cheeseburgers` / `Roast beef sandwiches` / `Chicken tenders` / `Carne asada tacos` / `Pepperoni pizza slices` / `Chicken quesadillas` / `Buffalo chicken wings` / `Poutine`
+- **Why V1 wins**: V1 has "Gourmet burgers" and "Iced coffee drinks" which semantically cover both order types. V2 has many burger-adjacent titles but none maps closely to "Whopper Meal" + "Iced Coffee" as a pair. V1 also has only 5 carousels vs V2's 10, so each title carries more weight per match.
 
 ---
 
-#### V2 much better than V1
+#### V2 better than V1
 
-| Consumer | Day Part | MMS (V1) | MMS (V2) | Delta |
-|----------|----------|-----------|----------|-------|
-| 238704771 | weekend_dinner | 0.165 | 1.000 | **−0.835** |
-| 472215709 | weekday_breakfast | 0.215 | 1.000 | **−0.785** |
-| 544649652 | weekend_lunch | 0.271 | 1.000 | **−0.729** |
+| Consumer | Day Part | N orders | MMS (V1) | MMS (V2) | Delta |
+|----------|----------|----------|-----------|----------|-------|
+| 40556574 | weekend_late_night | 6 | 0.458 | 0.924 | **−0.466** |
+| 429252167 | weekend_dinner | 5 | 0.317 | 0.764 | **−0.447** |
 
-**Example — consumer 238704771, weekend_dinner:**
-- V1: `Vietnamese noodle soups` / `Cajun seafood boils` / `Spicy fried rice` / `Build your own pho` / `Hearty Cajun fare` / `Customizable rice plates` / `Panang curry specials` / `Delectable spring rolls` / `Comforting yellow curry`
-- V2: `Beef pho` / `Yellow curry` / `Poke bowls` / `Panang curry` / `Spicy fried rice` / `Braised oxtail` / `Boiled crawfish` / `Pad see ew` / `Korean BBQ` / `Thin crust pizza`
-- **Why V2 wins**: V2 uses specific dish names that precisely match this user's order history ("Beef pho", "Panang curry", "Boiled crawfish"). V1's broader category titles ("Build your own pho", "Delectable spring rolls") are semantically close but score lower under MMS. V2 scoring 1.0 means every order item found a near-perfect match.
+**Example — consumer 40556574, weekend_late_night:**
+- Orders: `Sweet and Sour Chicken` (×2) / `Beau Thai Chicken` / `Green Dragon Roll` / `Spicy Crunchy Tuna Roll` / `Pineapple Fried Rice`
+- V1: `Spicy noodle dishes` / `Bold kebabs` / `Gourmet pizzas` / `Savory comfort classics` / `Indulgent desserts` / `Fusion sushi rolls` / `Sizzling stir-fry` / `Flavorful tacos` / `Late-night sandwiches` / `Creative rice dishes`
+- V2: `Sweet and sour chicken` / `Korean fried chicken` / `Chicken stir-fry` / `Khao soi` / `Green dragon rolls` / `Kebab platters` / `Spicy tuna rolls` / `Pineapple fried rice` / `Pepperoni pizza` / `Burgers`
+- **Why V2 wins**: V2 has near-exact matches for 4 of 6 order items ("Sweet and sour chicken", "Green dragon rolls", "Spicy tuna rolls", "Pineapple fried rice"). V1's "Fusion sushi rolls" and "Sizzling stir-fry" are semantically related but too vague to score as high.
 
-**Example — consumer 472215709, weekday_breakfast:**
-- V1: `Breakfast burritos` / `Chicken and waffles` / `Savory breakfast wraps` / `Breakfast sandwiches` / `Breakfast hot dogs` / `Gourmet donuts` / `Fresh fruit bowls` / `Savory breakfast pastries`
-- V2: `Acevichado rolls` / `Birria tacos` / `Hot dogs` / `Dynamite maki` / `Chicken wraps` / `Breakfast sandwiches` / `Breakfast burritos` / `Avocado toast` / `Acai bowls` / `Bagels with cream cheese`
-- **Why V2 wins**: V2 captures a broader, more eclectic mix matching this user's diverse order history (sushi, tacos, American breakfast). V1 is stuck in breakfast-focused titles that miss the user's non-breakfast ordering patterns.
+**Example — consumer 429252167, weekend_dinner:**
+- Orders: `Spicy Rigatoni alla Vodka` / `Cacio e Pepe` / `Fusilli Arrabiata` / `b'artusi Burger` / `Veal Parmigiana`
+- V1: `Greek Mezze platters` / `Thai curry varieties` / `Asian noodle bowls` / `Gourmet sandwiches` / `Savory rice bowls` / `Dim sum specialties` / `Mediterranean grain bowls` / `Savory kebab platters` / `Stuffed pasta options` / `Szechuan spicy dishes`
+- V2: `Spicy rigatoni vodka` / `Veal parmigiana` / `Pad kee mao` / `Roast chicken` / `Cheeseburgers` / `Gyro platters` / `Cacio e pepe` / `Chicken souvlaki` / `Chicken satay` / `Avgolemono soup`
+- **Why V2 wins**: V2 has exact matches for 3 of 5 orders ("Spicy rigatoni vodka", "Cacio e pepe", "Veal parmigiana"). V1's "Stuffed pasta options" is in the right direction but far too generic to score well against specific Italian dishes.
 
 ---
 
 ### SR@5 (Semantic Recall at K=5)
 
-| Direction | Consumer | Day Part | SR@5 (V1) | SR@5 (V2) | Delta |
-|-----------|----------|----------|------------|-----------|-------|
-| V1 better | 6781488 | weekday_lunch | 1.0 | 0.0 | **+1.0** |
-| V1 better | 6802566 | weekend_breakfast | 1.0 | 0.0 | **+1.0** |
-| V2 better | 1004703 | weekday_late_night | 0.0 | 1.0 | **−1.0** |
-| V2 better | 6864795 | weekday_lunch | 0.0 | 1.0 | **−1.0** |
+Filtered to ≥ 5 orders per daypart. SR@5 = 0 means no order item had a carousel title with cosine similarity ≥ 0.45 among the top 5 carousels; SR@5 = 1.0 means all did.
 
-Note: SR@5 = 0 means none of the user's order items had a carousel title within cosine similarity ≥ 0.45; SR@5 = 1.0 means all did. The 0/1 extremes reflect consumers whose ordering style closely matches one model's titling style and completely misses the other's.
+| Direction | Consumer | Day Part | N orders | SR@5 (V1) | SR@5 (V2) | Delta |
+|-----------|----------|----------|----------|------------|-----------|-------|
+| V1 better | 46179095 | weekday_late_night | 5 | 1.0 | 0.0 | **+1.0** |
+| V1 better | 1385131098 | weekday_late_night | 5 | 1.0 | 0.0 | **+1.0** |
+| V2 better | 46036561 | weekend_lunch | 6 | 0.0 | 1.0 | **−1.0** |
+| V2 better | 85381561 | weekend_dinner | 6 | 0.0 | 1.0 | **−1.0** |
 
 ---
 
 ### Composite Quality Score
 
-| Direction | Consumer | Day Part | Composite (V1) | Composite (V2) | Delta |
-|-----------|----------|----------|-----------------|----------------|-------|
-| V1 better | 464957246 | weekday_lunch | 0.738 | 0.204 | **+0.534** |
-| V1 better | 63815090 | weekend_dinner | 0.731 | 0.215 | **+0.516** |
-| V2 better | 155295051 | weekend_late_night | 0.211 | 0.748 | **−0.538** |
-| V2 better | 645112840 | weekend_breakfast | 0.193 | 0.725 | **−0.532** |
+| Direction | Consumer | Day Part | N orders | Composite (V1) | Composite (V2) | Delta |
+|-----------|----------|----------|----------|-----------------|----------------|-------|
+| V1 better | 61849693 | weekday_lunch | 5 | 0.772 | 0.461 | **+0.311** |
+| V1 better | 1497887469 | weekday_late_night | 6 | 0.719 | 0.417 | **+0.302** |
+| V2 better | 446814605 | weekend_dinner | 5 | 0.322 | 0.710 | **−0.388** |
+| V2 better | 74034478 | weekday_breakfast | 6 | 0.266 | 0.630 | **−0.364** |
 
-Composite = MMS 20%, SR@5 20%, OHCD 20%, CCR 15%, ILD 15% (FCS excluded). The extremes mirror the MMS pattern closely — consumers where one model's titling style aligns with the order history dominate both MMS and composite.
+**Example — consumer 61849693, weekday_lunch (V1 better):**
+- Orders: `Plain Naan` / `Samosa` / `Tandoori Chicken` / `Garlic Naan` / `Chicken Tikka Masala`
+- V1: `Chicken tikka masala` / `Tandoori chicken` / `Garlic naan bread` / `Biryani varieties` / `Kati rolls` / `Chaat options` / `Malai kofta` / `Butter chicken` — entirely Indian
+- V2: `Chicken tikka masala` / `Tandoori chicken` / `Chicken quesadillas` / `Italian sandwiches` / `Chicken tacos` / `Chicken burrito bowls` / `Butter chicken` / `Chicken biryani` / `Grilled chicken sandwiches` / `Grilled chicken salads` — diluted with non-Indian items
+- **Why V1 wins**: V1 is tightly focused on the user's cuisine (Indian). V2 has the same top 2 titles but fills the rest with generic "chicken X" items that score low against Indian food.
+
+**Example — consumer 74034478, weekday_breakfast (V2 better):**
+- Orders: `Mangu con queso y salami` (×2) / `Mangu 3 golpes` / `Morir Sonando Juice` / `Mangu con queso,salami y huevos`
+- V1: `Dominican breakfast dishes` / `Gourmet breakfast sandwiches` / `Classic donuts` / `Savory breakfast wraps` / `Iced coffee selections` / `Fast breakfast items` / `Hearty breakfast bowls` / `Bakery goods for breakfast` / `Comfort breakfast classics` / `Light breakfast fare`
+- V2: `Mangu con queso y salami` / `Bacon egg and cheese bagels` / `Turkey bacon sandwiches` / `Tostones con salami` / `French toast` / `Chilaquiles` / `Shakshuka` / `Breakfast croissants` / `Breakfast crepes`
+- **Why V2 wins**: V2 has exact matches — "Mangu con queso y salami" and "Tostones con salami" directly match this user's orders. V1 correctly identifies the cuisine as Dominican ("Dominican breakfast dishes") but the category title is too vague to score high similarity against the specific dish names.
 
 ---
 
 ### Key Observations from Extreme Cases
 
-1. **V1 uses abstract category titles; V2 uses specific dish names.** V1 titles like "Savory noodle soups" or "Indulgent late-night snacks" cast a wider semantic net and win when the user ordered a diverse mix within a category. V2 titles like "Beef pho" or "Boiled crawfish" score perfectly when the user ordered that exact dish, but fail entirely for users with different profiles.
+1. **V1 uses abstract category titles; V2 uses specific dish names.** V1 titles like "Classic donuts" or "Gourmet burgers" cover a category broadly — good when the user's orders span that category. V2 titles like "Spicy rigatoni vodka" or "Mangu con queso y salami" score near-perfectly when the user ordered that exact dish, but score near-zero for users with different tastes.
 
-2. **V2's perfect MMS=1.0 cases are not cherry-picked — they reflect exact semantic matches** between the user's order history and V2's specific dish names. V1 cannot replicate this because its titles describe categories, not dishes.
+2. **V2 wins decisively when the user has a specific, consistent cuisine preference** and V2 happens to name those exact dishes (consumer 40556574: "Sweet and sour chicken" ×2, "Green dragon rolls", "Spicy tuna rolls" all exactly in V2). V1's category titles are too vague to compete.
 
-3. **The gap is consumer-specific, not systematic across all consumers.** Some consumers are dramatically better served by V1; others by V2. The mean gap (−0.056 on MMS) is an average across these divergent patterns.
+3. **V1 wins when it happens to carry the right category title** that covers multiple order items at once (consumer 928293731: "Classic donuts", "Hash browns", "Iced coffee drinks" each match directly). V1 can also win when V2 dilutes its carousel with off-cuisine items (consumer 61849693: Indian food user, V2 fills with generic "Grilled chicken salads").
 
-4. **CCR extreme cases (delta = ±1.0)** occur when one model's carousel covers zero cuisine families from the user's history. This is usually a case where the user's cuisine diversity is high and the carousel is narrowly focused on a different cuisine set.
+4. **The gap is consumer-specific, not universal.** The mean MMS gap (−0.056) averages consumers who strongly favor V2 against those who marginally favor V1.
+
+5. **Data quality note**: consumer 928293731 has a non-food item ("GUNNAR computer glasses") in their order history, which is filtered out by the `is_cng=0` check but may indicate that the order history query captures some non-restaurant orders.
 
 ---
 
