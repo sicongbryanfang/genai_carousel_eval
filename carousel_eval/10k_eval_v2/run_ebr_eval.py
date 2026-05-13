@@ -48,11 +48,11 @@ from run_10k_eval_v2 import parse_carousels as parse_v2_carousels
 ORDER_LOOKBACK_DAYS = 90
 EBR_TABLE = "proddb.ml.cx_profile_generated_carousels_ebr"
 
-# Match significance_by_label.py — TMC and FCS excluded
+# Match significance_by_label.py — TMC excluded; FCS included (5-rule formula with brand check)
 METRIC_COLS = [
     "mms", "sr_at_3", "sr_at_5", "sr_at_10",
     "ccr", "ild", "tcd", "redundancy_rate",
-    "ohcd", "composite_quality_score",
+    "ohcd", "fcs", "composite_quality_score",
 ]
 
 LOWER_IS_BETTER = {"redundancy_rate"}
@@ -379,6 +379,7 @@ def main():
     # Step 4: Normalize & embed EBR carousels (title_only)
     print("\n[norm] Normalizing EBR carousels ...")
     df_carousel = normalize_ebr(df_ebr_raw)
+    # food_type is intentionally left as-is; FCS/TMC are excluded from composite below
     print(f"  Carousel rows: {len(df_carousel):,}")
 
     print("[norm] Normalizing order history ...")

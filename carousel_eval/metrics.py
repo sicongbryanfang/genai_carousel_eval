@@ -31,6 +31,10 @@ ADJECTIVE_BLOCKLIST = frozenset(
 ALCOHOL_TOKENS = frozenset(
     {"beer", "wine", "cocktail", "whiskey", "bourbon", "spirits", "vodka", "sake", "liquor", "cider"}
 )
+BRAND_KEYWORDS = frozenset({
+    "big mac", "mcnugget", "whopper", "mcgriddle", "mcmuffin",
+    "chipotle", "happy meal", "mcchicken", "chick-fil-a", "kfc",
+})
 
 # Map each cuisine tag to its top-level family for diversity / CCR grouping.
 CUISINE_TOP_LEVEL: Dict[str, str] = {
@@ -86,11 +90,10 @@ def format_compliance_score(
     Return a [0, 1] compliance score for a single carousel based on the prompt rules:
 
     - Title ≤ 5 words
-    - Sentence case  (first word capitalised, rest lowercase)
     - Title does not start with a known filler adjective
     - Title contains no alcohol tokens
-    - food_type array has 5–15 items, each token 2–3 words
     - cuisine_type array has ≤ 3 items
+    - Title contains no brand/chain name (e.g. chipotle, kfc, mcnugget)
     """
     title = title or ""
     food_type = list(food_type or [])
@@ -104,14 +107,16 @@ def format_compliance_score(
             return False
         return all(w.islower() for w in words[1:] if w.isalpha())
 
+    lower = title.lower()
     checks = [
         len(words) <= 5,
         # sentence_case_ok(),  # removed: first-letter capitalization rule
         (words[0].lower() not in ADJECTIVE_BLOCKLIST) if words else True,
-        not any(tok in ALCOHOL_TOKENS for tok in title.lower().split()),
+        not any(tok in ALCOHOL_TOKENS for tok in lower.split()),
         # food_type count/token checks removed: food_type is absent in the
         # 10k eval carousel format, making those checks always fail/pass vacuously.
         len(cuisine_type) <= 3,
+        not any(kw in lower for kw in BRAND_KEYWORDS),
     ]
     return sum(checks) / len(checks)
 

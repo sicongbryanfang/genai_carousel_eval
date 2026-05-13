@@ -280,6 +280,10 @@ ADJECTIVE_BLOCKLIST = frozenset(
 ALCOHOL_TOKENS = frozenset(
     {"beer", "wine", "cocktail", "whiskey", "bourbon", "spirits", "vodka", "sake", "liquor", "cider"}
 )
+BRAND_KEYWORDS = frozenset({
+    "big mac", "mcnugget", "whopper", "mcgriddle", "mcmuffin",
+    "chipotle", "happy meal", "mcchicken", "chick-fil-a", "kfc",
+})
 CUISINE_TOP_LEVEL: Dict[str, str] = {
     tag: path[0] for tag, path in CUISINE_TAXONOMY_DICT.items()
 }
@@ -337,14 +341,14 @@ def format_compliance_score(
             return False
         return all(w.islower() for w in words[1:] if w.isalpha())
 
+    lower = title.lower()
     checks = [
         len(words) <= 5,
         # sentence_case_ok(),  # removed: first-letter capitalization rule
         (words[0].lower() not in ADJECTIVE_BLOCKLIST) if words else True,
-        not any(tok in ALCOHOL_TOKENS for tok in title.lower().split()),
-        5 <= len(food_type) <= 15,
-        all(2 <= len(tok.split()) <= 3 for tok in food_type),
+        not any(tok in ALCOHOL_TOKENS for tok in lower.split()),
         len(cuisine_type) <= 3,
+        not any(kw in lower for kw in BRAND_KEYWORDS),
     ]
     return sum(checks) / len(checks)
 
